@@ -46,13 +46,21 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+int pulse_width = 500; // max (a domyslnie jest 500 na start)
+uint32_t sensorReadValue[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-
+void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+	if(GPIO_Pin == BUTTON_Pin) {
+		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		pulse_width -= 10;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_width);
+	}
+}
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -91,13 +99,35 @@ int main(void)
   MX_TIM4_Init();
   MX_ADC1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+  HAL_ADC_Start(&hadc1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		sensorReadValue[0] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_11);
+		HAL_ADC_Start(&hadc1);
+	}
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		sensorReadValue[1] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_12);
+		HAL_ADC_Start(&hadc1);
+	}
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		sensorReadValue[2] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_13);
+		HAL_ADC_Start(&hadc1);
+	}
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		sensorReadValue[3] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_10);
+		HAL_ADC_Start(&hadc1);
+	}
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
