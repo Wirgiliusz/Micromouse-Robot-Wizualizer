@@ -31,7 +31,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "stm32f429i_discovery_lcd.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -53,6 +53,8 @@
 /* USER CODE BEGIN PV */
 int pulse_width = 500; // max (a domyslnie jest 500 na start)
 uint32_t sensorReadValue[4];
+
+int narysowano = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -111,6 +113,14 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
   HAL_ADC_Start(&hadc1);
+
+  // LCD Init
+  BSP_LCD_Init();
+  BSP_LCD_LayerDefaultInit(LCD_BACKGROUND_LAYER, LCD_FRAME_BUFFER);
+  BSP_LCD_LayerDefaultInit(LCD_FOREGROUND_LAYER, LCD_FRAME_BUFFER);
+  BSP_LCD_SelectLayer(LCD_FOREGROUND_LAYER);
+  BSP_LCD_DisplayOn();
+  BSP_LCD_Clear(LCD_COLOR_WHITE);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -143,6 +153,17 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+	// lcd test
+	//BSP_LCD_DrawRect(0, 0, 240, 320);
+	if(!narysowano) {
+		BSP_LCD_DrawRect(4, 4, 22, 22);
+		BSP_LCD_DrawRect(5, 5, 20, 20);
+		BSP_LCD_DrawLine(26, 16, 30, 16);
+
+		BSP_LCD_FillRect(34, 4, 22, 22);
+		BSP_LCD_DrawLine(30, 16, 34, 16);
+		narysowano = 1;
+	}
   }
   /* USER CODE END 3 */
 }
