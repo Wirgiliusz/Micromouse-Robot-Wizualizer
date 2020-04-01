@@ -173,17 +173,20 @@ int main(void)
 	//BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
 	BSP_LCD_Clear(LCD_COLOR_BLACK);
 	rysujKwadratPelny(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(2000);
+	HAL_Delay(1500);
 	jedzProsto(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(1500);
 	jedzPrawo(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(1500);
 	jedzLewo(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(1500);
 	jedzTyl(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(1500);
 	jedzProsto(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(1500);
+	jedzPrawo(&robot);
+	HAL_Delay(1500);
 	narysowano = 1;
   }
 

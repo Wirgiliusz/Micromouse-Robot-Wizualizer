@@ -12,6 +12,7 @@ void jedzProsto(Robot* robot) {
 	// Funkcja ktora bedzie obslugiwala jazde na wprost
 
 	rysujKwadratPusty(robot);
+	rysujPolonczenie(robot);
 
 	switch(robot->orientacja) {
 	case 0:
