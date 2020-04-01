@@ -155,6 +155,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	// lcd test
 	//BSP_LCD_DrawRect(0, 0, 240, 320);
+	/*
 	if(!narysowano) {
 		BSP_LCD_DrawRect(4, 4, 22, 22);
 		BSP_LCD_DrawRect(5, 5, 20, 20);
@@ -163,7 +164,8 @@ int main(void)
 		BSP_LCD_FillRect(34, 4, 22, 22);
 		BSP_LCD_DrawLine(30, 16, 34, 16);
 		narysowano = 1;
-	}
+	}*/
+
   }
   /* USER CODE END 3 */
 }
