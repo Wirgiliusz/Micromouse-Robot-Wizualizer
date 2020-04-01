@@ -32,6 +32,8 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f429i_discovery_lcd.h"
+#include "robot.h"
+#include "funkcje_rysujace.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +57,8 @@ int pulse_width = 500; // max (a domyslnie jest 500 na start)
 uint32_t sensorReadValue[4];
 
 int narysowano = 0;
+
+Robot robot = {0, 0, 1};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -155,6 +159,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	// lcd test
 	//BSP_LCD_DrawRect(0, 0, 240, 320);
+	/*
 	if(!narysowano) {
 		BSP_LCD_DrawRect(4, 4, 22, 22);
 		BSP_LCD_DrawRect(5, 5, 20, 20);
@@ -163,7 +168,28 @@ int main(void)
 		BSP_LCD_FillRect(34, 4, 22, 22);
 		BSP_LCD_DrawLine(30, 16, 34, 16);
 		narysowano = 1;
-	}
+	}*/
+	if(!narysowano) {
+	//BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_Clear(LCD_COLOR_BLACK);
+	rysujKwadratPelny(&robot);
+	HAL_Delay(2000);
+	jedzProsto(&robot);
+	HAL_Delay(1500);
+	jedzPrawo(&robot);
+	HAL_Delay(1500);
+	jedzLewo(&robot);
+	HAL_Delay(1500);
+	jedzTyl(&robot);
+	HAL_Delay(1500);
+	jedzProsto(&robot);
+	HAL_Delay(1500);
+	jedzPrawo(&robot);
+	HAL_Delay(1500);
+	narysowano = 1;
+  }
+
+
   }
   /* USER CODE END 3 */
 }
