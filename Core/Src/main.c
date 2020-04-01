@@ -32,6 +32,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "stm32f429i_discovery_lcd.h"
+#include "robot.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -55,6 +56,8 @@ int pulse_width = 500; // max (a domyslnie jest 500 na start)
 uint32_t sensorReadValue[4];
 
 int narysowano = 0;
+
+Robot robot = {0, 0, 1};
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -165,6 +168,9 @@ int main(void)
 		BSP_LCD_DrawLine(30, 16, 34, 16);
 		narysowano = 1;
 	}*/
+
+
+
 
   }
   /* USER CODE END 3 */

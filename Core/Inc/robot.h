@@ -18,5 +18,6 @@ void jedzProsto(Robot* robot);
 void obroc(Robot* robot, int strona);
 void jedzPrawo(Robot* robot);
 void jedzLewo(Robot* robot);
+void jedzTyl(Robot* robot);
 
 #endif /* INC_ROBOT_H_ */

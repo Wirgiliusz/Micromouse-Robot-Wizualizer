@@ -54,3 +54,10 @@ void jedzLewo(Robot* robot) {
 	obroc(robot, 0);
 	jedzProsto(robot);
 }
+
+
+void jedzTyl(Robot* robot) {
+	obroc(robot, 1);
+	obroc(robot, 1);
+	jedzProsto(robot);
+}
