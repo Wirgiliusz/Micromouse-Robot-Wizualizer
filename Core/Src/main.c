@@ -174,7 +174,6 @@ int main(void)
 	BSP_LCD_Clear(LCD_COLOR_BLACK);
 	rysujKwadratPelny(&robot);
 	HAL_Delay(2000);
-	HAL_Delay(1500);
 	jedzProsto(&robot);
 	HAL_Delay(1500);
 	jedzPrawo(&robot);

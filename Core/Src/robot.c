@@ -11,9 +11,9 @@
 void jedzProsto(Robot* robot) {
 	// Funkcja ktora bedzie obslugiwala jazde na wprost
 
+	rysujPolonczeniePrzedWejsciem(robot);
+	HAL_Delay(500);
 	rysujKwadratPusty(robot);
-	rysujPolonczenie(robot);
-
 	switch(robot->orientacja) {
 	case 0:
 		robot->posY--;
@@ -30,6 +30,7 @@ void jedzProsto(Robot* robot) {
 	}
 
 	rysujKwadratPelny(robot);
+	rysujPolonczeniePoWejsciu(robot);
 }
 
 // strona = 0 - obrot w lewo; strona = 1 - obrot w prawo

@@ -12,6 +12,7 @@
 
 void rysujKwadratPusty(Robot* robot);
 void rysujKwadratPelny(Robot* robot);
-void rysujPolonczenie(Robot* robot);
+void rysujPolonczeniePrzedWejsciem(Robot* robot);
+void rysujPolonczeniePoWejsciu(Robot* robot);
 
 #endif /* INC_FUNKCJE_RYSUJACE_H_ */
