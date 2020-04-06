@@ -175,17 +175,27 @@ int main(void)
 	rysujKwadratPelny(&robot);
 	HAL_Delay(2000);
 	jedzProsto(&robot);
-	HAL_Delay(1500);
+	HAL_Delay(1000);
 	jedzPrawo(&robot);
-	HAL_Delay(1500);
+	HAL_Delay(1000);
 	jedzLewo(&robot);
-	HAL_Delay(1500);
+	HAL_Delay(1000);
 	jedzTyl(&robot);
-	HAL_Delay(1500);
+	HAL_Delay(1000);
 	jedzProsto(&robot);
-	HAL_Delay(1500);
+	HAL_Delay(1000);
 	jedzPrawo(&robot);
-	HAL_Delay(1500);
+	HAL_Delay(1000);
+	jedzTyl(&robot);
+	HAL_Delay(1000);
+	jedzProsto(&robot);
+	HAL_Delay(1000);
+	jedzProsto(&robot);
+	HAL_Delay(1000);
+	jedzLewo(&robot);
+	HAL_Delay(1000);
+	jedzProsto(&robot);
+
 	narysowano = 1;
   }
 
