@@ -13,6 +13,7 @@
 void rysujGranicePlanszy();
 void rysujInformacje();
 void rysujPozycje(int x, int y);
+void rysujPredkosc(int predkosc);
 
 void rysujKwadratPusty(Robot* robot);
 void rysujKwadratPelny(Robot* robot);

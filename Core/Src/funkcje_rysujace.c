@@ -18,7 +18,8 @@ void rysujInformacje() {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
 	BSP_LCD_DisplayStringAt(0, 240, (uint8_t*)"Ruch: ", LEFT_MODE);
-	BSP_LCD_DisplayStringAt(0, 270, (uint8_t*)"Pozycja: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 260, (uint8_t*)"Pozycja: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 280, (uint8_t*)"Predkosc: ", LEFT_MODE);
 }
 
 void rysujPozycje(int x, int y) {
@@ -28,9 +29,17 @@ void rysujPozycje(int x, int y) {
 	sprintf(posY, "%d", y);
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
-	BSP_LCD_DisplayStringAt(145, 270, (uint8_t*)posX, LEFT_MODE);
-	BSP_LCD_DisplayStringAt(160, 270, (uint8_t*)",", LEFT_MODE);
-	BSP_LCD_DisplayStringAt(175, 270, (uint8_t*)posY, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(145, 260, (uint8_t*)posX, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(160, 260, (uint8_t*)",", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(175, 260, (uint8_t*)posY, LEFT_MODE);
+}
+
+void rysujPredkosc(int predkosc) {
+	char predkoscStr[5];
+	sprintf(predkoscStr, "%d", predkosc);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_DisplayStringAt(160, 280, (uint8_t*)predkoscStr, LEFT_MODE);
 }
 
 void rysujKwadratPusty(Robot* robot) {

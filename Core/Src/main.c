@@ -69,8 +69,12 @@ void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
+		if(pulse_width < 110) {
+			pulse_width = 500;
+		}
 		pulse_width -= 10;
 		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_width);
+		rysujPredkosc(pulse_width);
 	}
 }
 /* USER CODE END PFP */
@@ -164,6 +168,7 @@ int main(void)
 	rysujKwadratPelny(&robot);
 	rysujGranicePlanszy();
 	rysujInformacje();
+	rysujPredkosc(pulse_width);
 
 	HAL_Delay(2000);
 	jedzProsto(&robot);
