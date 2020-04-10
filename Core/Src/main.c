@@ -161,6 +161,9 @@ int main(void)
 	if(!narysowano) {
 	BSP_LCD_Clear(LCD_COLOR_BLACK);
 	rysujKwadratPelny(&robot);
+	rysujGranicePlanszy();
+	rysujInformacje();
+
 	HAL_Delay(2000);
 	jedzProsto(&robot);
 	HAL_Delay(1000);

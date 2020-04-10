@@ -6,6 +6,32 @@
  */
 #include "funkcje_rysujace.h"
 #include "stm32f429i_discovery_lcd.h"
+#include <stdio.h>
+
+
+void rysujGranicePlanszy() {
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	BSP_LCD_DrawRect(0, 0, 239, 239);
+}
+
+void rysujInformacje() {
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_DisplayStringAt(0, 240, (uint8_t*)"Ruch: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 270, (uint8_t*)"Pozycja: ", LEFT_MODE);
+}
+
+void rysujPozycje(int x, int y) {
+	char posX[2];
+	char posY[2];
+	sprintf(posX, "%d", x);
+	sprintf(posY, "%d", y);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_DisplayStringAt(145, 270, (uint8_t*)posX, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(160, 270, (uint8_t*)",", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(175, 270, (uint8_t*)posY, LEFT_MODE);
+}
 
 void rysujKwadratPusty(Robot* robot) {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);

@@ -32,6 +32,8 @@ void jedzProsto(Robot* robot) {
 
 	rysujKwadratPelny(robot);
 	rysujPolaczeniePoWejsciu(robot);
+
+	rysujPozycje(robot->posX, robot->posY);
 }
 
 // strona = 0 - obrot w lewo;

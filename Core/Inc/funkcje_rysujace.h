@@ -10,6 +10,10 @@
 
 #include "robot.h"
 
+void rysujGranicePlanszy();
+void rysujInformacje();
+void rysujPozycje(int x, int y);
+
 void rysujKwadratPusty(Robot* robot);
 void rysujKwadratPelny(Robot* robot);
 void rysujPolaczeniePrzedWejsciem(Robot* robot);
