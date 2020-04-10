@@ -43,6 +43,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define OPOZNIENIE_SYMULUJACE_RUCH 200
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -133,7 +134,7 @@ int main(void)
   {
 	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
 		sensorReadValue[0] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_12);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_11);
 		HAL_ADC_Start(&hadc1);
 	}
 	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
@@ -143,16 +144,16 @@ int main(void)
 	}
 	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
 		sensorReadValue[2] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_11);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_7);
 		HAL_ADC_Start(&hadc1);
 	}
-	/*
+
 	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
 		sensorReadValue[3] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_10);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
 		HAL_ADC_Start(&hadc1);
 	}
-	*/
+
 
     /* USER CODE END WHILE */
 
@@ -166,25 +167,25 @@ int main(void)
 
 	HAL_Delay(2000);
 	jedzProsto(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzPrawo(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzLewo(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzTyl(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzProsto(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzPrawo(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzTyl(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzProsto(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzProsto(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzLewo(&robot);
-	HAL_Delay(1000);
+	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzProsto(&robot);
 
 	narysowano = 1;
