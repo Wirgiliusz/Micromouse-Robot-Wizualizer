@@ -9,6 +9,15 @@
 #include <stdio.h>
 
 
+void inicjalizujRysowanie() {
+	BSP_LCD_Clear(LCD_COLOR_BLACK);
+	BSP_LCD_SetFont(&Font12);
+	rysujGranicePlanszy();
+	rysujInformacje();
+	rysujPozycje(0,0);
+	rysujPredkosc(500);
+}
+
 void rysujGranicePlanszy() {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_DrawRect(0, 0, 239, 239);

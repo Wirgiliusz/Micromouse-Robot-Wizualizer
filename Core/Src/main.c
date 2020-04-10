@@ -164,11 +164,7 @@ int main(void)
     /* USER CODE BEGIN 3 */
 	// Symulacja ruchu robota przez labirynt //
 	if(!narysowano) {
-	BSP_LCD_Clear(LCD_COLOR_BLACK);
-	rysujKwadratPelny(&robot);
-	rysujGranicePlanszy();
-	rysujInformacje();
-	rysujPredkosc(pulse_width);
+	inicjalizujRysowanie();
 
 	HAL_Delay(2000);
 	jedzProsto(&robot);

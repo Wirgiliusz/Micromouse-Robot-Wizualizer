@@ -10,6 +10,8 @@
 
 #include "robot.h"
 
+void inicjalizujRysowanie();
+
 void rysujGranicePlanszy();
 void rysujInformacje();
 void rysujPozycje(int x, int y);
