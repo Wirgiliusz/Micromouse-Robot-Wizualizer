@@ -20,4 +20,6 @@ void jedzPrawo(Robot* robot);
 void jedzLewo(Robot* robot);
 void jedzTyl(Robot* robot);
 
+void skanujObszar();
+
 #endif /* INC_ROBOT_H_ */

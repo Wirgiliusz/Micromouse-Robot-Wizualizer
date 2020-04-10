@@ -157,20 +157,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	// lcd test
-	//BSP_LCD_DrawRect(0, 0, 240, 320);
-	/*
+	// Symulacja ruchu robota przez labirynt //
 	if(!narysowano) {
-		BSP_LCD_DrawRect(4, 4, 22, 22);
-		BSP_LCD_DrawRect(5, 5, 20, 20);
-		BSP_LCD_DrawLine(26, 16, 30, 16);
-
-		BSP_LCD_FillRect(34, 4, 22, 22);
-		BSP_LCD_DrawLine(30, 16, 34, 16);
-		narysowano = 1;
-	}*/
-	if(!narysowano) {
-	//BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
 	BSP_LCD_Clear(LCD_COLOR_BLACK);
 	rysujKwadratPelny(&robot);
 	HAL_Delay(2000);

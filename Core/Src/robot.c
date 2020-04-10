@@ -9,9 +9,10 @@
 
 
 void jedzProsto(Robot* robot) {
-	// Funkcja ktora bedzie obslugiwala jazde na wprost
+	// TODO //
+	// Funkcja obslugujace jazde na wprost o 1 pole
 
-	rysujPolonczeniePrzedWejsciem(robot);
+	rysujPolaczeniePrzedWejsciem(robot);
 	HAL_Delay(500);
 	rysujKwadratPusty(robot);
 	switch(robot->orientacja) {
@@ -30,11 +31,15 @@ void jedzProsto(Robot* robot) {
 	}
 
 	rysujKwadratPelny(robot);
-	rysujPolonczeniePoWejsciu(robot);
+	rysujPolaczeniePoWejsciu(robot);
 }
 
-// strona = 0 - obrot w lewo; strona = 1 - obrot w prawo
+// strona = 0 - obrot w lewo;
+// strona = 1 - obrot w prawo
 void obroc(Robot* robot, int strona) {
+	// TODO //
+	// Funkcja obslugujaca obrot w zadanym kierunku
+
 	switch(strona) {
 	case 0:
 		robot->orientacja--;
@@ -57,9 +62,12 @@ void jedzLewo(Robot* robot) {
 	jedzProsto(robot);
 }
 
-
 void jedzTyl(Robot* robot) {
 	obroc(robot, 1);
 	obroc(robot, 1);
 	jedzProsto(robot);
+}
+
+void skanujObszar() {
+
 }

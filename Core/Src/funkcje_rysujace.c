@@ -17,8 +17,7 @@ void rysujKwadratPelny(Robot* robot) {
 	BSP_LCD_FillRect(robot->posX*30+4, robot->posY*30+4, 22, 22);
 }
 
-
-void rysujPolonczeniePrzedWejsciem(Robot* robot){
+void rysujPolaczeniePrzedWejsciem(Robot* robot){
 	switch (robot->orientacja){
 	case 0:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
@@ -39,9 +38,7 @@ void rysujPolonczeniePrzedWejsciem(Robot* robot){
 	}
 }
 
-
-
-void rysujPolonczeniePoWejsciu(Robot* robot){
+void rysujPolaczeniePoWejsciu(Robot* robot){
 	switch (robot->orientacja){
 	case 0:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
