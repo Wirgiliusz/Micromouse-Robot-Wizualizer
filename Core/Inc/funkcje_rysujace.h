@@ -18,8 +18,8 @@ void rysujPozycje(int x, int y);
 void rysujPredkosc(int predkosc);
 void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4);
 
-void rysujKwadratPusty(Robot* robot);
-void rysujKwadratPelny(Robot* robot);
+void rysujKwadratPusty(int posX, int posY);
+void rysujKwadratPelny(int posX, int posY);
 void rysujPolaczeniePrzedWejsciem(Robot* robot);
 void rysujPolaczeniePoWejsciu(Robot* robot);
 

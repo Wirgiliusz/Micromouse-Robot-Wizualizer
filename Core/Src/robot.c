@@ -14,7 +14,7 @@ void jedzProsto(Robot* robot) {
 
 	rysujPolaczeniePrzedWejsciem(robot);
 	HAL_Delay(500);
-	rysujKwadratPusty(robot);
+	rysujKwadratPusty(robot->posX, robot->posY);
 	switch(robot->orientacja) {
 	case 0:
 		robot->posY--;
@@ -30,7 +30,7 @@ void jedzProsto(Robot* robot) {
 		break;
 	}
 
-	rysujKwadratPelny(robot);
+	rysujKwadratPelny(robot->posX, robot->posY);
 	rysujPolaczeniePoWejsciu(robot);
 
 	rysujPozycje(robot->posX, robot->posY);

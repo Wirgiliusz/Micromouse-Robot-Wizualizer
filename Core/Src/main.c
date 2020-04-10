@@ -193,7 +193,7 @@ int main(void)
 	narysowano = 1;
     }
 
-	HAL_Delay(300);
+	//HAL_Delay(300);
   }
   /* USER CODE END 3 */
 }

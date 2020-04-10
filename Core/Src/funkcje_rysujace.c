@@ -11,6 +11,7 @@
 
 void inicjalizujRysowanie() {
 	BSP_LCD_Clear(LCD_COLOR_BLACK);
+	rysujKwadratPelny(0,0);
 	BSP_LCD_SetFont(&Font12);
 	rysujGranicePlanszy();
 	rysujInformacje();
@@ -69,14 +70,14 @@ void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4) {
 
 }
 
-void rysujKwadratPusty(Robot* robot) {
+void rysujKwadratPusty(int posX, int posY) {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-	BSP_LCD_FillRect(robot->posX*30+4, robot->posY*30+4, 22, 22);
+	BSP_LCD_FillRect(posX*30+4, posY*30+4, 22, 22);
 }
 
-void rysujKwadratPelny(Robot* robot) {
+void rysujKwadratPelny(int posX, int posY) {
 	BSP_LCD_SetTextColor(LCD_COLOR_RED);
-	BSP_LCD_FillRect(robot->posX*30+4, robot->posY*30+4, 22, 22);
+	BSP_LCD_FillRect(posX*30+4, posY*30+4, 22, 22);
 }
 
 void rysujPolaczeniePrzedWejsciem(Robot* robot){
