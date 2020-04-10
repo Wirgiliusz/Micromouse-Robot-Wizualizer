@@ -16,6 +16,7 @@ void rysujGranicePlanszy();
 void rysujInformacje();
 void rysujPozycje(int x, int y);
 void rysujPredkosc(int predkosc);
+void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4);
 
 void rysujKwadratPusty(Robot* robot);
 void rysujKwadratPelny(Robot* robot);

@@ -55,7 +55,7 @@
 
 /* USER CODE BEGIN PV */
 int pulse_width = 500; // max (a domyslnie jest 500 na start)
-uint32_t sensorReadValue[4];
+int sensorReadValue[4];
 
 int narysowano = 0;
 
@@ -157,6 +157,7 @@ int main(void)
 		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
 		HAL_ADC_Start(&hadc1);
 	}
+	rysujCzujniki(sensorReadValue[0], sensorReadValue[1], sensorReadValue[2], sensorReadValue[3]);
 
 
     /* USER CODE END WHILE */
@@ -190,9 +191,9 @@ int main(void)
 	jedzProsto(&robot);
 
 	narysowano = 1;
-  }
+    }
 
-
+	HAL_Delay(300);
   }
   /* USER CODE END 3 */
 }

@@ -29,6 +29,7 @@ void rysujInformacje() {
 	BSP_LCD_DisplayStringAt(0, 240, (uint8_t*)"Ruch: ", LEFT_MODE);
 	BSP_LCD_DisplayStringAt(0, 250, (uint8_t*)"Pozycja: ", LEFT_MODE);
 	BSP_LCD_DisplayStringAt(0, 260, (uint8_t*)"Predkosc: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 270, (uint8_t*)"Czujniki: ", LEFT_MODE);
 }
 
 void rysujPozycje(int x, int y) {
@@ -49,6 +50,23 @@ void rysujPredkosc(int predkosc) {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
 	BSP_LCD_DisplayStringAt(70, 260, (uint8_t*)predkoscStr, LEFT_MODE);
+}
+
+void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4) {
+	czujnik1 = czujnik1/4;
+	czujnik2 = czujnik2/4;
+	czujnik3 = czujnik3/4;
+	czujnik4 = czujnik4/4;
+	char czujnik1str[4], czujnik2str[4], czujnik3str[4], czujnik4str[4];
+	sprintf(czujnik1str, "%d", czujnik1);
+	sprintf(czujnik2str, "%d", czujnik2);
+	sprintf(czujnik3str, "%d", czujnik3);
+	sprintf(czujnik4str, "%d", czujnik4);
+	BSP_LCD_DisplayStringAt(70, 270, (uint8_t*)czujnik4str, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(100, 270, (uint8_t*)czujnik2str, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(130, 270, (uint8_t*)czujnik1str, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(160, 270, (uint8_t*)czujnik3str, LEFT_MODE);
+
 }
 
 void rysujKwadratPusty(Robot* robot) {
