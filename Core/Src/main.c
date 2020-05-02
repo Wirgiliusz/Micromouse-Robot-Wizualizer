@@ -72,8 +72,13 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		if(pulse_width < 110) {
 			pulse_width = 500;
 		}
-		pulse_width -= 10;
+		pulse_width -= 50;
 		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, pulse_width);
 		rysujPredkosc(pulse_width);
 	}
 }
@@ -119,18 +124,38 @@ int main(void)
   MX_I2C3_Init();
   MX_LTDC_Init();
   MX_SPI5_Init();
+  MX_TIM2_Init();
+  MX_TIM9_Init();
   /* USER CODE BEGIN 2 */
-  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 500);
-  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
-  HAL_ADC_Start(&hadc1);
 
   // LCD Init
+
   BSP_LCD_Init();
   BSP_LCD_LayerDefaultInit(LCD_BACKGROUND_LAYER, LCD_FRAME_BUFFER);
   BSP_LCD_LayerDefaultInit(LCD_FOREGROUND_LAYER, LCD_FRAME_BUFFER);
   BSP_LCD_SelectLayer(LCD_FOREGROUND_LAYER);
   BSP_LCD_DisplayOn();
   BSP_LCD_Clear(LCD_COLOR_WHITE);
+
+  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 500);
+  HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
+
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 500);
+    HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
+
+  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 500);
+  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
+
+  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 500);
+  HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2);
+
+  __HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 500);
+  HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);
+
+  __HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, 500);
+  HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);
+
+  HAL_ADC_Start(&hadc1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -158,12 +183,14 @@ int main(void)
 		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
 		HAL_ADC_Start(&hadc1);
 	}
+
 	rysujCzujniki(sensorReadValue[0], sensorReadValue[1], sensorReadValue[2], sensorReadValue[3]);
 
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
 	// Symulacja ruchu robota przez labirynt //
 	if(!narysowano) {
 	inicjalizujRysowanie();
@@ -241,7 +268,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV8;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV4;
+  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV8;
 
   if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {

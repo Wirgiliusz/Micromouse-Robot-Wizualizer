@@ -777,14 +777,14 @@ void LCD_IO_Init(void)
     GPIO_InitStructure.Pull    = GPIO_NOPULL;
     GPIO_InitStructure.Speed   = GPIO_SPEED_FAST;
     HAL_GPIO_Init(LCD_WRX_GPIO_PORT, &GPIO_InitStructure);
-    
+    /*
     LCD_RDX_GPIO_CLK_ENABLE();
     GPIO_InitStructure.Pin     = LCD_RDX_PIN;
     GPIO_InitStructure.Mode    = GPIO_MODE_OUTPUT_PP;
     GPIO_InitStructure.Pull    = GPIO_NOPULL;
     GPIO_InitStructure.Speed   = GPIO_SPEED_FAST;
     HAL_GPIO_Init(LCD_RDX_GPIO_PORT, &GPIO_InitStructure);
-    
+	*/
     /* Configure the LCD Control pins ----------------------------------------*/
     LCD_NCS_GPIO_CLK_ENABLE();
     

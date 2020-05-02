@@ -212,7 +212,7 @@ uint8_t BSP_LCD_Init(void)
     LtdcHandler.Init.PCPolarity = LTDC_PCPOLARITY_IPC;
     
     BSP_LCD_MspInit();
-    HAL_LTDC_Init(&LtdcHandler); 
+    HAL_LTDC_Init(&LtdcHandler);
     
     /* Select the device */
     LcdDrv = &ili9341_drv;
