@@ -77,8 +77,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pulse_width);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulse_width);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, pulse_width);
-		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, pulse_width);
-		__HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, pulse_width);
+
 		rysujPredkosc(pulse_width);
 	}
 }
@@ -149,11 +148,6 @@ int main(void)
   __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 500);
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2);
 
-  __HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_1, 500);
-  HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_1);
-
-  __HAL_TIM_SET_COMPARE(&htim12, TIM_CHANNEL_2, 500);
-  HAL_TIM_PWM_Start(&htim12, TIM_CHANNEL_2);
 
   HAL_ADC_Start(&hadc1);
   /* USER CODE END 2 */
