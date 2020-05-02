@@ -120,6 +120,7 @@ int main(void)
   MX_LTDC_Init();
   MX_SPI5_Init();
   /* USER CODE BEGIN 2 */
+  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 500);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
   HAL_ADC_Start(&hadc1);
 
