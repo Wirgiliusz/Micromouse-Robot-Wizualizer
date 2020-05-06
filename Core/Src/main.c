@@ -70,13 +70,11 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
 		if(pulse_width < 110) {
-			pulse_width = 500;
+			pulse_width = 300;
 		}
 		pulse_width -= 50;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_width);
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, pulse_width);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulse_width);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 
 		rysujPredkosc(pulse_width);
 	}
@@ -136,16 +134,16 @@ int main(void)
   BSP_LCD_DisplayOn();
   BSP_LCD_Clear(LCD_COLOR_WHITE);
 
-  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 500);
+  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
 
-  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 500);
+  __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 
-  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 500);
+  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300);
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
 
-  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 500);
+  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2);
 
 
