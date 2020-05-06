@@ -134,13 +134,13 @@ int main(void)
   BSP_LCD_DisplayOn();
   BSP_LCD_Clear(LCD_COLOR_WHITE);
 
-  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300);
+  __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
 
   __HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
     HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_1);
 
-  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300);
+  __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_1);
 
   __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
@@ -187,6 +187,7 @@ int main(void)
 	if(!narysowano) {
 	inicjalizujRysowanie();
 
+	/*
 	HAL_Delay(2000);
 	jedzProsto(&robot);
 	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
@@ -208,6 +209,8 @@ int main(void)
 	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	jedzLewo(&robot);
 	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+	*/
+	HAL_Delay(2000);
 	jedzProsto(&robot);
 
 	narysowano = 1;
