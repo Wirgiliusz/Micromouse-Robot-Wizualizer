@@ -5,12 +5,25 @@
  *      Author: Maialen
  */
 #include "robot.h"
+#include "tim.h"
 #include "funkcje_rysujace.h"
 
+#define MAX_PREDKOSC 1000
 
 void jedzProsto(Robot* robot) {
 	// TODO //
 	// Funkcja obslugujace jazde na wprost o 1 pole
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
+
+	for(int i = 1; i<=3; ++i){
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, i*0.1*MAX_PREDKOSC);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, i*0.1*MAX_PREDKOSC);
+		HAL_Delay(300);
+	}
+	HAL_Delay(1000);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 
 	rysujPolaczeniePrzedWejsciem(robot);
 	HAL_Delay(500);
