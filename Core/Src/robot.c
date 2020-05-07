@@ -12,15 +12,13 @@
 #define MAX_PREDKOSC 1000
 
 void jedzProsto(Robot* robot) {
-	// TODO //
-	// Funkcja obslugujace jazde na wprost o 1 pole
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
 
-	HAL_Delay(2000);
+	HAL_Delay(4000);
 
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
@@ -74,10 +72,14 @@ void obroc(Robot* robot, int strona) {
 		break;
 	}
 
-	HAL_Delay(2000);
+	HAL_Delay(1000);
 
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+
+	HAL_Delay(500);
 }
 
 void jedzPrawo(Robot* robot) {

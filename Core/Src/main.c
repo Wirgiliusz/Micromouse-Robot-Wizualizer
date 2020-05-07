@@ -179,33 +179,12 @@ int main(void)
 	// Symulacja ruchu robota przez labirynt //
 	if(!narysowano) {
 		inicjalizujRysowanie();
-		/*
-		HAL_Delay(2000);
+
+		HAL_Delay(3000);
 		jedzProsto(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 		jedzPrawo(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 		jedzLewo(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 		jedzTyl(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		jedzProsto(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		jedzPrawo(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		jedzTyl(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		jedzProsto(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		jedzProsto(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		jedzLewo(&robot);
-		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-		*/
-		HAL_Delay(2000);
-		//jedzProsto(&robot);
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 
 		narysowano = 1;
     }
