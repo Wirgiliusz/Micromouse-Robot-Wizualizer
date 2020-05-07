@@ -56,19 +56,16 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-int szerokoscSygnalu = 0; // max (a domyslnie jest 500 na start)
-
-int narysowano = 0;
-
-Robot robot = {0, 0, 1};
-
-
-uint8_t odebraneDane; // wiadomosc odebrana od BT
+int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
+int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
+Robot robot = {0, 0, 1}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
+uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+// Przerwanie dla nacisniecia przycisku USER
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
@@ -83,7 +80,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	}
 }
 
-// Bluetooth
+// Przerwanie dla odebrania danych z modulu BT
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	switch(atoi(&odebraneDane)) {
 	case 0:
@@ -145,7 +142,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart1, &odebraneDane, 1); // odebieranie danych z BT o wielkosci 1
 
-  // LCD Init
+  // Inicjalizacja LCD
   BSP_LCD_Init();
   BSP_LCD_LayerDefaultInit(LCD_BACKGROUND_LAYER, LCD_FRAME_BUFFER);
   BSP_LCD_LayerDefaultInit(LCD_FOREGROUND_LAYER, LCD_FRAME_BUFFER);
@@ -153,6 +150,7 @@ int main(void)
   BSP_LCD_DisplayOn();
   BSP_LCD_Clear(LCD_COLOR_WHITE);
 
+  // Inicjalizacja PWM
   __HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
   HAL_TIM_PWM_Start(&htim4, TIM_CHANNEL_1);
 
@@ -165,7 +163,7 @@ int main(void)
   __HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
   HAL_TIM_PWM_Start(&htim9, TIM_CHANNEL_2);
 
-
+  // Inicjalizacja ADC
   HAL_ADC_Start(&hadc1);
   /* USER CODE END 2 */
 
@@ -174,47 +172,43 @@ int main(void)
   while (1)
   {
 	skanujObszar(&robot);
-
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
 	// Symulacja ruchu robota przez labirynt //
 	if(!narysowano) {
-	inicjalizujRysowanie();
+		inicjalizujRysowanie();
+		/*
+		HAL_Delay(2000);
+		jedzProsto(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzPrawo(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzLewo(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzTyl(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzProsto(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzPrawo(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzTyl(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzProsto(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzProsto(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		jedzLewo(&robot);
+		HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
+		*/
+		HAL_Delay(2000);
+		//jedzProsto(&robot);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 
-	/*
-	HAL_Delay(2000);
-	jedzProsto(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzPrawo(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzLewo(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzTyl(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzProsto(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzPrawo(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzTyl(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzProsto(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzProsto(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	jedzLewo(&robot);
-	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
-	*/
-	HAL_Delay(2000);
-	//jedzProsto(&robot);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
-
-	narysowano = 1;
+		narysowano = 1;
     }
-
-	//HAL_Delay(300);
   }
   /* USER CODE END 3 */
 }
