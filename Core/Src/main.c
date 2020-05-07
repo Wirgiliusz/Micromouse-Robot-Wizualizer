@@ -26,6 +26,7 @@
 #include "ltdc.h"
 #include "spi.h"
 #include "tim.h"
+#include "usart.h"
 #include "gpio.h"
 #include "fmc.h"
 
@@ -34,6 +35,7 @@
 #include "stm32f429i_discovery_lcd.h"
 #include "robot.h"
 #include "funkcje_rysujace.h"
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -60,6 +62,9 @@ int sensorReadValue[4];
 int narysowano = 0;
 
 Robot robot = {0, 0, 1};
+
+
+uint8_t Received; // wiadomosc odebrana od BT
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -79,6 +84,21 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		rysujPredkosc(pulse_width);
 	}
 }
+
+// Bluetooth
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+	switch(atoi(&Received)) {
+	case 0:
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+	break;
+	case 1:
+		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+	break;
+	}
+	HAL_UART_Receive_IT(&huart1, &Received, 1);
+}
+
+
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -123,10 +143,11 @@ int main(void)
   MX_SPI5_Init();
   MX_TIM2_Init();
   MX_TIM9_Init();
+  MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
+  HAL_UART_Receive_IT(&huart1, &Received, 1); // odebieranie danych z BT o wielkosci 1
 
   // LCD Init
-
   BSP_LCD_Init();
   BSP_LCD_LayerDefaultInit(LCD_BACKGROUND_LAYER, LCD_FRAME_BUFFER);
   BSP_LCD_LayerDefaultInit(LCD_FOREGROUND_LAYER, LCD_FRAME_BUFFER);
