@@ -7,6 +7,7 @@
 #include "robot.h"
 #include "tim.h"
 #include "funkcje_rysujace.h"
+#include "adc.h"
 
 #define MAX_PREDKOSC 1000
 
@@ -83,6 +84,30 @@ void jedzTyl(Robot* robot) {
 	jedzProsto(robot);
 }
 
-void skanujObszar() {
+void skanujObszar(Robot* robot) {
+	void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		robot->odczytCzujnikow[0] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_11);
+		HAL_ADC_Start(&hadc1);
+	}
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		robot->odczytCzujnikow[1] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_13);
+		HAL_ADC_Start(&hadc1);
+	}
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		robot->odczytCzujnikow[2] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_7);
+		HAL_ADC_Start(&hadc1);
+	}
+
+	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
+		robot->odczytCzujnikow[3] = HAL_ADC_GetValue(&hadc1);
+		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
+		HAL_ADC_Start(&hadc1);
+	}
+
+	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
 }

@@ -57,7 +57,6 @@
 
 /* USER CODE BEGIN PV */
 int szerokoscSygnalu = 0; // max (a domyslnie jest 500 na start)
-int odczytCzujnikow[4];
 
 int narysowano = 0;
 
@@ -70,7 +69,6 @@ uint8_t odebraneDane; // wiadomosc odebrana od BT
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
@@ -175,30 +173,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		odczytCzujnikow[0] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_11);
-		HAL_ADC_Start(&hadc1);
-	}
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		odczytCzujnikow[1] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_13);
-		HAL_ADC_Start(&hadc1);
-	}
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		odczytCzujnikow[2] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_7);
-		HAL_ADC_Start(&hadc1);
-	}
-
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		odczytCzujnikow[3] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
-		HAL_ADC_Start(&hadc1);
-	}
-
-	rysujCzujniki(odczytCzujnikow[0], odczytCzujnikow[1], odczytCzujnikow[2], odczytCzujnikow[3]);
-
+	skanujObszar(&robot);
 
     /* USER CODE END WHILE */
 
