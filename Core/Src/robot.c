@@ -16,7 +16,7 @@ void jedzProsto(Robot* robot) {
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 
-	for(int i = 1; i<=3; ++i){
+	for(int i = 1; i<=1; ++i){
 		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, i*0.1*MAX_PREDKOSC);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, i*0.1*MAX_PREDKOSC);
 		HAL_Delay(300);

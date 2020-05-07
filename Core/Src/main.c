@@ -54,7 +54,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-int pulse_width = 500; // max (a domyslnie jest 500 na start)
+int pulse_width = 0; // max (a domyslnie jest 500 na start)
 int sensorReadValue[4];
 
 int narysowano = 0;
@@ -69,12 +69,12 @@ void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		if(pulse_width < 110) {
-			pulse_width = 300;
+		if(pulse_width > 1000) {
+			pulse_width = 0;
 		}
-		pulse_width -= 50;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+		pulse_width += 10;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_width);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulse_width);
 
 		rysujPredkosc(pulse_width);
 	}
@@ -211,7 +211,9 @@ int main(void)
 	HAL_Delay(OPOZNIENIE_SYMULUJACE_RUCH);
 	*/
 	HAL_Delay(2000);
-	jedzProsto(&robot);
+	//jedzProsto(&robot);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 
 	narysowano = 1;
     }
