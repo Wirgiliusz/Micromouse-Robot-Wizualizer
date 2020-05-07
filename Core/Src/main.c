@@ -56,38 +56,36 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-int pulse_width = 0; // max (a domyslnie jest 500 na start)
-int sensorReadValue[4];
+int szerokoscSygnalu = 0; // max (a domyslnie jest 500 na start)
 
 int narysowano = 0;
 
 Robot robot = {0, 0, 1};
 
 
-uint8_t Received; // wiadomosc odebrana od BT
+uint8_t odebraneDane; // wiadomosc odebrana od BT
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		if(pulse_width > 1000) {
-			pulse_width = 0;
+		if(szerokoscSygnalu > 1000) {
+			szerokoscSygnalu = 0;
 		}
-		pulse_width += 10;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, pulse_width);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, pulse_width);
+		szerokoscSygnalu += 10;
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, szerokoscSygnalu);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, szerokoscSygnalu);
 
-		rysujPredkosc(pulse_width);
+		rysujPredkosc(szerokoscSygnalu);
 	}
 }
 
 // Bluetooth
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-	switch(atoi(&Received)) {
+	switch(atoi(&odebraneDane)) {
 	case 0:
 		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
 	break;
@@ -95,7 +93,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
 	break;
 	}
-	HAL_UART_Receive_IT(&huart1, &Received, 1);
+	HAL_UART_Receive_IT(&huart1, &odebraneDane, 1);
 }
 
 
@@ -145,7 +143,7 @@ int main(void)
   MX_TIM9_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-  HAL_UART_Receive_IT(&huart1, &Received, 1); // odebieranie danych z BT o wielkosci 1
+  HAL_UART_Receive_IT(&huart1, &odebraneDane, 1); // odebieranie danych z BT o wielkosci 1
 
   // LCD Init
   BSP_LCD_Init();
@@ -175,30 +173,7 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		sensorReadValue[0] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_11);
-		HAL_ADC_Start(&hadc1);
-	}
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		sensorReadValue[1] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_13);
-		HAL_ADC_Start(&hadc1);
-	}
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		sensorReadValue[2] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_7);
-		HAL_ADC_Start(&hadc1);
-	}
-
-	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
-		sensorReadValue[3] = HAL_ADC_GetValue(&hadc1);
-		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
-		HAL_ADC_Start(&hadc1);
-	}
-
-	rysujCzujniki(sensorReadValue[0], sensorReadValue[1], sensorReadValue[2], sensorReadValue[3]);
-
+	skanujObszar(&robot);
 
     /* USER CODE END WHILE */
 
