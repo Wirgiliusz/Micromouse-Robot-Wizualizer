@@ -17,12 +17,11 @@ void jedzProsto(Robot* robot) {
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 
-	for(int i = 1; i<=1; ++i){
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, i*0.1*MAX_PREDKOSC);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, i*0.1*MAX_PREDKOSC);
-		HAL_Delay(300);
-	}
-	HAL_Delay(1000);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
+
+	HAL_Delay(2000);
+
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 
@@ -60,12 +59,25 @@ void obroc(Robot* robot, int strona) {
 	case 0:
 		robot->orientacja--;
 		robot->orientacja %=4;
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
 		break;
 	case 1:
 		robot->orientacja++;
 		robot->orientacja %=4;
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0.25*MAX_PREDKOSC);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 		break;
 	}
+
+	HAL_Delay(2000);
+
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 }
 
 void jedzPrawo(Robot* robot) {
