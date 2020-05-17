@@ -27,17 +27,17 @@ void jedzProsto(Robot* robot) {
 	HAL_Delay(500);
 	rysujKwadratPusty(robot->posX, robot->posY);
 	switch(robot->orientacja) {
-	case 0:
+	case Polnoc:
 		robot->posY--;
 		break;
-	case 1:
-		robot->posX++;
+	case Zachod:
+		robot->posX--;
 		break;
-	case 2:
+	case Poludnie:
 		robot->posY++;
 		break;
-	case 3:
-		robot->posX--;
+	case Wschod:
+		robot->posX++;
 		break;
 	}
 
@@ -49,21 +49,21 @@ void jedzProsto(Robot* robot) {
 
 // strona = 0 - obrot w lewo;
 // strona = 1 - obrot w prawo
-void obroc(Robot* robot, int strona) {
+void obroc(Robot* robot, enum Strony strona) {
 	// TODO //
 	// Funkcja obslugujaca obrot w zadanym kierunku
 
 	switch(strona) {
-	case 0:
-		robot->orientacja--;
+	case Lewo:
+		robot->orientacja++;
 		robot->orientacja %=4;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0.5*MAX_PREDKOSC);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0.5*MAX_PREDKOSC);
 		break;
-	case 1:
-		robot->orientacja++;
+	case Prawo:
+		robot->orientacja--;
 		robot->orientacja %=4;
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0.5*MAX_PREDKOSC);
@@ -83,18 +83,18 @@ void obroc(Robot* robot, int strona) {
 }
 
 void jedzPrawo(Robot* robot) {
-	obroc(robot, 1);
+	obroc(robot, Prawo);
 	jedzProsto(robot);
 }
 
 void jedzLewo(Robot* robot) {
-	obroc(robot, 0);
+	obroc(robot, Lewo);
 	jedzProsto(robot);
 }
 
 void jedzTyl(Robot* robot) {
-	obroc(robot, 1);
-	obroc(robot, 1);
+	obroc(robot, Prawo);
+	obroc(robot, Prawo);
 	jedzProsto(robot);
 }
 
