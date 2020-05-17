@@ -13,7 +13,6 @@ typedef struct Robot {
 	int posY;
 	enum Orientacje{Polnoc, Zachod, Poludnie, Wschod} orientacja;
 	enum Strony{Lewo, Prawo} strona;
-	//int orientacja; // 0 - polnoc, 1 - wschod, 2 - poludnie, 3 - zachod
 	int odczytCzujnikow[4];
 } Robot;
 

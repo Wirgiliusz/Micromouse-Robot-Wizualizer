@@ -58,7 +58,7 @@
 /* USER CODE BEGIN PV */
 int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
 int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
-Robot robot = {0, 0, 1}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
+Robot robot = {0, 0, Wschod}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
 /* USER CODE END PV */
 

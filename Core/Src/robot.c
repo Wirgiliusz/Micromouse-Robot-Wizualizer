@@ -47,12 +47,7 @@ void jedzProsto(Robot* robot) {
 	rysujPozycje(robot->posX, robot->posY);
 }
 
-// strona = 0 - obrot w lewo;
-// strona = 1 - obrot w prawo
 void obroc(Robot* robot, enum Strony strona) {
-	// TODO //
-	// Funkcja obslugujaca obrot w zadanym kierunku
-
 	switch(strona) {
 	case Lewo:
 		robot->orientacja++;
