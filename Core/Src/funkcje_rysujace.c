@@ -82,19 +82,19 @@ void rysujKwadratPelny(int posX, int posY) {
 
 void rysujPolaczeniePrzedWejsciem(Robot* robot){
 	switch (robot->orientacja){
-	case 0:
+	case Polnoc:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30, 2, 4);
 		break;
-	case 1:
+	case Wschod:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30+26, robot->posY*30+14, 4, 2);
 		break;
-	case 2:
+	case Poludnie:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30+26, 2, 4);
 		break;
-	case 3:
+	case Zachod:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30, robot->posY*30+14, 4, 2);
 		break;
@@ -103,19 +103,19 @@ void rysujPolaczeniePrzedWejsciem(Robot* robot){
 
 void rysujPolaczeniePoWejsciu(Robot* robot){
 	switch (robot->orientacja){
-	case 0:
+	case Polnoc:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30+26, 2, 4);
 		break;
-	case 1:
+	case Wschod:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30, robot->posY*30+14, 4, 2);
 		break;
-	case 2:
+	case Poludnie:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30, 2, 4);
 		break;
-	case 3:
+	case Zachod:
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 		BSP_LCD_FillRect(robot->posX*30+26, robot->posY*30+14, 4, 2);
 		break;

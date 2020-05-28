@@ -14,6 +14,8 @@ typedef struct Robot {
 	enum Orientacje{Polnoc, Zachod, Poludnie, Wschod} orientacja;
 	enum Strony{Lewo, Prawo} strona;
 	int odczytCzujnikow[4];
+	unsigned int impulsyEnkodera;
+
 } Robot;
 
 void jedzProsto(Robot* robot);

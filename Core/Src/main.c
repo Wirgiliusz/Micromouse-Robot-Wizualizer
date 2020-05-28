@@ -60,12 +60,14 @@ int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
 int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
 Robot robot = {0, 0, Wschod}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
+long impulsy;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
 // Przerwanie dla nacisniecia przycisku USER
+/*
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 	if(GPIO_Pin == BUTTON_Pin) {
 		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
@@ -79,6 +81,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 		rysujPredkosc(szerokoscSygnalu);
 	}
 }
+*/
 
 // Przerwanie dla odebrania danych z modulu BT
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
@@ -139,6 +142,7 @@ int main(void)
   MX_TIM2_Init();
   MX_TIM9_Init();
   MX_USART1_UART_Init();
+  MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart1, &odebraneDane, 1); // odebieranie danych z BT o wielkosci 1
 
@@ -165,12 +169,16 @@ int main(void)
 
   // Inicjalizacja ADC
   HAL_ADC_Start(&hadc1);
+
+  // Inicjalizacja licznika enkodera
+  HAL_TIM_Base_Start(&htim5);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	//impulsy = __HAL_TIM_GET_COUNTER(&htim5);
 	skanujObszar(&robot);
     /* USER CODE END WHILE */
 
@@ -182,9 +190,9 @@ int main(void)
 
 		HAL_Delay(3000);
 		jedzProsto(&robot);
-		jedzPrawo(&robot);
-		jedzLewo(&robot);
-		jedzTyl(&robot);
+		//jedzPrawo(&robot);
+		//jedzLewo(&robot);
+		//jedzTyl(&robot);
 
 		narysowano = 1;
     }
