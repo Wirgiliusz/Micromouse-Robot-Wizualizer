@@ -17,6 +17,7 @@ typedef struct Robot {
 	unsigned int impulsyEnkoderaR;
 	unsigned int impulsyEnkoderaL;
 	int e;
+	int e_poprzednie;
 
 } Robot;
 

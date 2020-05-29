@@ -15,13 +15,20 @@
 
 
 void jedzProsto(Robot* robot) {
-	unsigned int impulsyNaZadanaOdleglosc = odlegloscNaImpulsy(30);
+	unsigned int impulsyNaZadanaOdleglosc = odlegloscNaImpulsy(18);
+	//unsigned int impulsyBliskoKonca = impulsyNaZadanaOdleglosc - 100;
+	//int wspPredkosciR = 1;
+	//int wspPredkosciL = 1;
 	int praweOK = 0;
 	int leweOK = 0;
+
 	robot->e = 0;
+	robot->e_poprzednie = 0;
 	int u = 0;
-	float Kp = 2;
-	int V0 = 250;
+	float Kp = 0.005;
+	float Kd = 50;
+	int V0 = 300;
+
 	// Wyzeruj predkosc
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
@@ -31,8 +38,9 @@ void jedzProsto(Robot* robot) {
 	robot->impulsyEnkoderaR = __HAL_TIM_GetCounter(&htim5);
 	robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 	// Skok
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 250); // prawe do przodu
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 250); // lewe do przodu
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300); // prawe do przodu
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300); // lewe do przodu
+
 	// Regulacja
 	while(praweOK == 0 || leweOK == 0) {
 		rysujEnkoder(robot->impulsyEnkoderaR, 0);
@@ -45,11 +53,9 @@ void jedzProsto(Robot* robot) {
 			robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 		}
 
-
 		robot->e = robot->impulsyEnkoderaL - robot->impulsyEnkoderaR;
-
 		if(robot->e > 0) {
-			u = Kp * robot->e;
+			u = Kp * robot->e + Kd * (robot->e - robot->e_poprzednie);
 			if(u > 300) {
 				u = 300;
 			}
@@ -59,7 +65,7 @@ void jedzProsto(Robot* robot) {
 				__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u);
 		}
 		else if(robot->e < 0) {
-			u = -Kp * robot->e;
+			u = -(Kp * robot->e + Kd * (robot->e - robot->e_poprzednie));
 			if(u > 300) {
 				u = 300;
 			}
@@ -70,19 +76,27 @@ void jedzProsto(Robot* robot) {
 
 		}
 
+		robot->e_poprzednie = robot->e;
+
 		if(robot->impulsyEnkoderaL >= impulsyNaZadanaOdleglosc && leweOK != 1) {
-			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 1000);
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1000);
+			//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 1000);
+			//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1000);
 			leweOK = 1;
+			//praweOK = 1;
 		}
 		if(robot->impulsyEnkoderaR >= impulsyNaZadanaOdleglosc && praweOK != 1) {
-			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 1000);
-			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 1000);
+			//__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 1000);
+			//__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 1000);
 			praweOK = 1;
+			//leweOK = 1;
 		}
 	}
+	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1000);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 1000);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 1000);
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 1000);
 
-	HAL_Delay(500);
+	HAL_Delay(300);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
@@ -188,5 +202,5 @@ void skanujObszar(Robot* robot) {
 }
 
 int odlegloscNaImpulsy(int odleglosc) {
-	return (odleglosc*1920)/(4*3.141592*4);
+	return ((odleglosc)*1920)/(2*3.141592*7.96);
 }
