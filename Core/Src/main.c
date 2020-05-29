@@ -143,6 +143,7 @@ int main(void)
   MX_TIM9_Init();
   MX_USART1_UART_Init();
   MX_TIM5_Init();
+  MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
   HAL_UART_Receive_IT(&huart1, &odebraneDane, 1); // odebieranie danych z BT o wielkosci 1
 
@@ -171,7 +172,8 @@ int main(void)
   HAL_ADC_Start(&hadc1);
 
   // Inicjalizacja licznika enkodera
-  HAL_TIM_Base_Start(&htim5);
+  HAL_TIM_Base_Start(&htim5);	// Enkoder R (PA0)
+  HAL_TIM_Base_Start(&htim3);	// Enkoder L (P14)
   /* USER CODE END 2 */
 
   /* Infinite loop */

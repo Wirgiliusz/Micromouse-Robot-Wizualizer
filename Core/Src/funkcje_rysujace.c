@@ -16,7 +16,8 @@ void inicjalizujRysowanie() {
 	rysujGranicePlanszy();
 	rysujInformacje();
 	rysujPozycje(0,0);
-	rysujPredkosc(500);
+	rysujEnkoder(0, 0);
+	rysujEnkoder(0, 1);
 }
 
 void rysujGranicePlanszy() {
@@ -27,9 +28,9 @@ void rysujGranicePlanszy() {
 void rysujInformacje() {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
-	BSP_LCD_DisplayStringAt(0, 240, (uint8_t*)"Ruch: ", LEFT_MODE);
-	BSP_LCD_DisplayStringAt(0, 250, (uint8_t*)"Pozycja: ", LEFT_MODE);
-	BSP_LCD_DisplayStringAt(0, 260, (uint8_t*)"Predkosc: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 240, (uint8_t*)"Pozycja: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 250, (uint8_t*)"EnkoderR: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 260, (uint8_t*)"EnkoderL: ", LEFT_MODE);
 	BSP_LCD_DisplayStringAt(0, 270, (uint8_t*)"Czujniki: ", LEFT_MODE);
 }
 
@@ -40,9 +41,9 @@ void rysujPozycje(int x, int y) {
 	sprintf(posY, "%d", y);
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
-	BSP_LCD_DisplayStringAt(70, 250, (uint8_t*)posX, LEFT_MODE);
-	BSP_LCD_DisplayStringAt(80, 250, (uint8_t*)",", LEFT_MODE);
-	BSP_LCD_DisplayStringAt(90, 250, (uint8_t*)posY, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(70, 240, (uint8_t*)posX, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(80, 240, (uint8_t*)",", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(90, 240, (uint8_t*)posY, LEFT_MODE);
 }
 
 void rysujPredkosc(int predkosc) {
@@ -51,6 +52,23 @@ void rysujPredkosc(int predkosc) {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
 	BSP_LCD_DisplayStringAt(70, 260, (uint8_t*)predkoscStr, LEFT_MODE);
+}
+
+void rysujEnkoder(int impulsy, int lewy) {
+	if(lewy) {
+		char impulsyStr[5];
+		sprintf(impulsyStr, "%d", impulsy);
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+		BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+		BSP_LCD_DisplayStringAt(70, 260, (uint8_t*)impulsyStr, LEFT_MODE);
+	}
+	else {
+		char impulsyStr[5];
+		sprintf(impulsyStr, "%d", impulsy);
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+		BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+		BSP_LCD_DisplayStringAt(70, 250, (uint8_t*)impulsyStr, LEFT_MODE);
+	}
 }
 
 void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4) {

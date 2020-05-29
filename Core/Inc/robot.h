@@ -14,7 +14,9 @@ typedef struct Robot {
 	enum Orientacje{Polnoc, Zachod, Poludnie, Wschod} orientacja;
 	enum Strony{Lewo, Prawo} strona;
 	int odczytCzujnikow[4];
-	unsigned int impulsyEnkodera;
+	unsigned int impulsyEnkoderaR;
+	unsigned int impulsyEnkoderaL;
+	int e;
 
 } Robot;
 
@@ -25,5 +27,7 @@ void jedzLewo(Robot* robot);
 void jedzTyl(Robot* robot);
 
 void skanujObszar(Robot* robot);
+
+int odlegloscNaImpulsy(int odleglosc);
 
 #endif /* INC_ROBOT_H_ */
