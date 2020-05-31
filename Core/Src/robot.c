@@ -24,7 +24,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	//float Kp = 0.005;
 	//float Kd = 50;
 	float Kp = 0.05;
-	float Kd = 5;
+	float Kd = 3;
 	int V0 = 250;
 
 	// Wyzeruj predkosc
@@ -146,7 +146,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 
 void jedzProsto(Robot* robot) {
 
-	regulator(robot, 18, 0, Prawo);
+	regulator(robot, 17.5, 0, Prawo);
 
 	rysujPolaczeniePrzedWejsciem(robot);
 	HAL_Delay(500);
