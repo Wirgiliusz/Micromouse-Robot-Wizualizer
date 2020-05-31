@@ -21,9 +21,11 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	robot->e = 0;
 	robot->e_poprzednie = 0;
 	int u = 0;
-	float Kp = 0.005;
-	float Kd = 50;
-	int V0 = 300;
+	//float Kp = 0.005;
+	//float Kd = 50;
+	float Kp = 0.05;
+	float Kd = 5;
+	int V0 = 250;
 
 	// Wyzeruj predkosc
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
@@ -37,18 +39,18 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 	// Skok
 	if(czyObrot == 0) {
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300); // prawe do przodu
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300); // lewe do przodu
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0); // prawe do przodu
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0); // lewe do przodu
 	}
 	else {
 		switch(strona) {
 		case Lewo:
-			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300); // prawe do przodu
-			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 300); // lewe do tylu
+			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0); // prawe do przodu
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, V0); // lewe do tylu
 			break;
 		case Prawo:
-			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300); // lewe do przodu
-			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 300); // prawe do tylu
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0); // lewe do przodu
+			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, V0); // prawe do tylu
 			break;
 		}
 	}
@@ -175,29 +177,14 @@ void obroc(Robot* robot, enum Strony strona) {
 	case Lewo:
 		robot->orientacja++;
 		robot->orientacja %=4;
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
+		regulator(robot, 8.247, 1, Lewo);
 		break;
 	case Prawo:
 		robot->orientacja--;
 		robot->orientacja %=4;
-		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0.25*MAX_PREDKOSC);
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0.25*MAX_PREDKOSC);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+		regulator(robot, 8.247, 1, Prawo);
 		break;
 	}
-
-	HAL_Delay(300);
-
-	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
-
-	HAL_Delay(500);
 }
 
 void jedzPrawo(Robot* robot) {

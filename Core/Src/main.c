@@ -192,9 +192,11 @@ int main(void)
 
 		HAL_Delay(3000);
 		jedzProsto(&robot);
-		//jedzPrawo(&robot);
-		//jedzLewo(&robot);
-		//jedzTyl(&robot);
+		jedzProsto(&robot);
+		jedzPrawo(&robot);
+		jedzLewo(&robot);
+		jedzLewo(&robot);
+		jedzTyl(&robot);
 
 		narysowano = 1;
     }
