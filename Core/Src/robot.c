@@ -12,13 +12,9 @@
 #define MAX_PREDKOSC 1000
 
 
+void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) {
+	unsigned int impulsyNaZadanaOdleglosc = odlegloscNaImpulsy(odleglosc);
 
-
-void jedzProsto(Robot* robot) {
-	unsigned int impulsyNaZadanaOdleglosc = odlegloscNaImpulsy(18);
-	//unsigned int impulsyBliskoKonca = impulsyNaZadanaOdleglosc - 100;
-	//int wspPredkosciR = 1;
-	//int wspPredkosciL = 1;
 	int praweOK = 0;
 	int leweOK = 0;
 
@@ -30,6 +26,8 @@ void jedzProsto(Robot* robot) {
 	int V0 = 300;
 
 	// Wyzeruj predkosc
+	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 	// Wyzeruj liczniki impulsow
@@ -38,8 +36,22 @@ void jedzProsto(Robot* robot) {
 	robot->impulsyEnkoderaR = __HAL_TIM_GetCounter(&htim5);
 	robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 	// Skok
-	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300); // prawe do przodu
-	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300); // lewe do przodu
+	if(czyObrot == 0) {
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300); // prawe do przodu
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300); // lewe do przodu
+	}
+	else {
+		switch(strona) {
+		case Lewo:
+			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 300); // prawe do przodu
+			__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 300); // lewe do tylu
+			break;
+		case Prawo:
+			__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 300); // lewe do przodu
+			__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 300); // prawe do tylu
+			break;
+		}
+	}
 
 	// Regulacja
 	while(praweOK == 0 || leweOK == 0) {
@@ -59,21 +71,48 @@ void jedzProsto(Robot* robot) {
 			if(u > 300) {
 				u = 300;
 			}
-			if(!praweOK)
-				__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u);
-			if(!leweOK)
-				__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u);
+			if(czyObrot == 0) {
+				if(!praweOK)
+					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u);
+				if(!leweOK)
+					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u);
+			}
+			else {
+				switch(strona) {
+				case Lewo:
+					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u); // prawe do przodu
+					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, V0 - u); // lewe do tylu
+					break;
+				case Prawo:
+					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u); // lewe do przodu
+					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, V0 + u); // prawe do tylu
+					break;
+				}
+			}
 		}
 		else if(robot->e < 0) {
 			u = -(Kp * robot->e + Kd * (robot->e - robot->e_poprzednie));
 			if(u > 300) {
 				u = 300;
 			}
-			if(!leweOK)
-				__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 + u);
-			if(!praweOK)
-				__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 - u);
-
+			if(czyObrot == 0) {
+				if(!praweOK)
+					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 - u);
+				if(!leweOK)
+					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 + u);
+			}
+			else {
+				switch(strona) {
+				case Lewo:
+					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 - u); // prawe do przodu
+					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, V0 + u); // lewe do tylu
+					break;
+				case Prawo:
+					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 + u); // lewe do przodu
+					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, V0 - u); // prawe do tylu
+					break;
+				}
+			}
 		}
 
 		robot->e_poprzednie = robot->e;
@@ -101,7 +140,11 @@ void jedzProsto(Robot* robot) {
 	__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
+}
 
+void jedzProsto(Robot* robot) {
+
+	regulator(robot, 18, 0, Prawo);
 
 	rysujPolaczeniePrzedWejsciem(robot);
 	HAL_Delay(500);
