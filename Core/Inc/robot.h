@@ -16,8 +16,12 @@ typedef struct Robot {
 	int odczytCzujnikow[4];
 	unsigned int impulsyEnkoderaR;
 	unsigned int impulsyEnkoderaL;
-	int e;
-	int e_poprzednie;
+	unsigned int odlegloscCzujnikaR;
+	unsigned int odlegloscCzujnikaL;
+	int e1;
+	int e1_poprzednie;
+	int e2;
+	int e2_poprzednie;
 
 } Robot;
 

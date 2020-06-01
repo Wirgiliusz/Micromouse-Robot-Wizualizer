@@ -18,13 +18,18 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	int praweOK = 0;
 	int leweOK = 0;
 
-	robot->e = 0;
-	robot->e_poprzednie = 0;
-	int u = 0;
-	//float Kp = 0.005;
-	//float Kd = 50;
-	float Kp = 0.05;
-	float Kd = 3;
+	robot->e1 = 0;
+	robot->e1_poprzednie = 0;
+	int u1 = 0;
+	float Kp1 = 0.05;
+	float Kd1 = 3;
+
+	robot->e2 = 0;
+	robot->e2_poprzednie = 0;
+	int u2 = 0;
+	float Kp2 = 0.01;
+	float Kd2 = 1;
+
 	int V0 = 300;
 
 	// Wyzeruj predkosc
@@ -35,8 +40,13 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	// Wyzeruj liczniki impulsow
 	__HAL_TIM_SetCounter(&htim5, 0);
 	__HAL_TIM_SetCounter(&htim3, 0);
+	// Odczytaj wartosci
 	robot->impulsyEnkoderaR = __HAL_TIM_GetCounter(&htim5);
 	robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
+	skanujObszar(robot);
+	robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3] - 50;
+	robot->odlegloscCzujnikaL = robot->odczytCzujnikow[2];
+
 	// Skok
 	if(czyObrot == 0) {
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0); // prawe do przodu
@@ -66,70 +76,59 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 		if(!leweOK) {
 			robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 		}
-
-		robot->e = robot->impulsyEnkoderaL - robot->impulsyEnkoderaR;
-		if(robot->e > 0) {
-			u = Kp * robot->e + Kd * (robot->e - robot->e_poprzednie);
-			if(u > 300) {
-				u = 300;
-			}
-			if(czyObrot == 0) {
-				if(!praweOK)
-					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u);
-				if(!leweOK)
-					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u);
-			}
-			else {
-				switch(strona) {
-				case Lewo:
-					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u); // prawe do przodu
-					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, V0 - u); // lewe do tylu
-					break;
-				case Prawo:
-					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u); // lewe do przodu
-					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, V0 + u); // prawe do tylu
-					break;
-				}
-			}
+		skanujObszar(robot);
+		robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3] - 50;
+		robot->odlegloscCzujnikaL = robot->odczytCzujnikow[2];
+		if(robot->odlegloscCzujnikaR <= 3300 && robot->odlegloscCzujnikaL <= 3300) {
+			robot->e2 = robot->odlegloscCzujnikaL - robot->odlegloscCzujnikaR;
 		}
-		else if(robot->e < 0) {
-			u = -(Kp * robot->e + Kd * (robot->e - robot->e_poprzednie));
-			if(u > 300) {
-				u = 300;
-			}
-			if(czyObrot == 0) {
-				if(!praweOK)
-					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 - u);
-				if(!leweOK)
-					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 + u);
-			}
-			else {
-				switch(strona) {
-				case Lewo:
-					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 - u); // prawe do przodu
-					__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, V0 + u); // lewe do tylu
-					break;
-				case Prawo:
-					__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 + u); // lewe do przodu
-					__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, V0 - u); // prawe do tylu
-					break;
-				}
+		else {
+			robot->e2 = 0;
+		}
+		robot->e1 = robot->impulsyEnkoderaL - robot->impulsyEnkoderaR;
+
+		u1 = Kp1 * robot->e1 + Kd1 * (robot->e1 - robot->e1_poprzednie);
+		u2 = Kp2 * robot->e2 + Kd2 * (robot->e2 - robot->e2_poprzednie);
+		if(u1 > 300) {
+			u1 = 300;
+		}
+		else if(u1 < -300) {
+			u1 = - 300;
+		}
+		if(u2 > 300) {
+			u2 = 300;
+		}
+		else if(u2 < -300) {
+			u2 = -300;
+		}
+
+		if(czyObrot == 0) {
+			if(!praweOK)
+				__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u1 + u2);
+			if(!leweOK)
+				__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u1 - u2);
+		}
+		else {
+			switch(strona) {
+			case Lewo:
+				__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, V0 + u1 + u2); // prawe do przodu
+				__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, V0 - u1 - u2); // lewe do tylu
+				break;
+			case Prawo:
+				__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, V0 - u1 - u2); // lewe do przodu
+				__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, V0 + u1 + u2); // prawe do tylu
+				break;
 			}
 		}
 
-		robot->e_poprzednie = robot->e;
+		robot->e1_poprzednie = robot->e1;
+		robot->e2_poprzednie = robot->e2;
 
 		if(robot->impulsyEnkoderaL >= impulsyNaZadanaOdleglosc && leweOK != 1) {
-			//__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 1000);
-			//__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1000);
 			leweOK = 1;
-			//praweOK = 1;
 		}
 		if(robot->impulsyEnkoderaR >= impulsyNaZadanaOdleglosc && praweOK != 1) {
-			//__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 1000);
-			//__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 1000);
 			praweOK = 1;
-			//leweOK = 1;
 		}
 	}
 	__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 1000);
