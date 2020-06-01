@@ -25,7 +25,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	//float Kd = 50;
 	float Kp = 0.05;
 	float Kd = 3;
-	int V0 = 250;
+	int V0 = 300;
 
 	// Wyzeruj predkosc
 	__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
@@ -226,6 +226,16 @@ void skanujObszar(Robot* robot) {
 		robot->odczytCzujnikow[3] = HAL_ADC_GetValue(&hadc1);
 		ADC_SetActiveChannel(&hadc1, ADC_CHANNEL_5);
 		HAL_ADC_Start(&hadc1);
+	}
+
+	if(robot->odczytCzujnikow[0] <= 3300 || robot->odczytCzujnikow[1]) {
+		// Sciana z przodu
+	}
+	if(robot->odczytCzujnikow[2] <= 3300) {
+		// Sciana po lewej
+	}
+	if(robot->odczytCzujnikow[3] <= 3300) {
+		// Sciana po prawej
 	}
 
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);

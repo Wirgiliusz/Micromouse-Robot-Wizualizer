@@ -60,7 +60,6 @@ int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
 int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
 Robot robot = {0, 0, Wschod}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
-long impulsy;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -174,22 +173,22 @@ int main(void)
   // Inicjalizacja licznika enkodera
   HAL_TIM_Base_Start(&htim5);	// Enkoder R (PA0)
   HAL_TIM_Base_Start(&htim3);	// Enkoder L (P14)
+
+  inicjalizujRysowanie();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	//impulsy = __HAL_TIM_GET_COUNTER(&htim5);
 	skanujObszar(&robot);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
 	// Symulacja ruchu robota przez labirynt //
-	if(!narysowano) {
-		inicjalizujRysowanie();
 
+	if(!narysowano) {
 		HAL_Delay(3000);
 		jedzProsto(&robot);
 		jedzProsto(&robot);
@@ -200,6 +199,7 @@ int main(void)
 
 		narysowano = 1;
     }
+
   }
   /* USER CODE END 3 */
 }
