@@ -29,8 +29,14 @@ typedef struct Robot {
 	int e1_poprzednie;
 	int e2;
 	int e2_poprzednie;
+	unsigned char tabLabiryntuBin[4][4];
+	unsigned char labiryntPoznawany[4][4];
+	int tabSciezki[4][4];
+	int obecnosc[4][4];
 
 } Robot;
+
+Robot konstruktorRobota(int poczatkoweX, int poczatkoweY, enum Orientacje poczatkowaOrientacja);
 
 void jedzProsto(Robot* robot);
 void obroc(Robot* robot, enum Strony strona);
@@ -39,6 +45,11 @@ void jedzLewo(Robot* robot);
 void jedzTyl(Robot* robot);
 
 void skanujObszar(Robot* robot);
+void jedzKierunek(Robot* robot, enum Orientacje kierunek);
+void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY);
+void znajdzNajkrotszaSciezkeStart(Robot* robot);
+void przejedzLabirynt(Robot* robot);
+void przeszukajLabirynt(Robot* robot);
 
 int odlegloscNaImpulsy(int odleglosc);
 
