@@ -354,6 +354,14 @@ void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY) {
     }
 }
 
+void znajdzNajkrotszaSciezkeStart(Robot* robot) {
+    int posX = KONIEC;
+    int posY = KONIEC;
+
+    znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY);
+    robot->tabSciezki[posX][posY] = 0;
+}
+
 int odlegloscNaImpulsy(int odleglosc) {
 	return ((odleglosc)*1920)/(2*3.141592*7.96);
 }
