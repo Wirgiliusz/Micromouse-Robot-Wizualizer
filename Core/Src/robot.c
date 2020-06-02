@@ -219,6 +219,70 @@ void jedzTyl(Robot* robot) {
 	jedzProsto(robot);
 }
 
+void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
+    switch(kierunek) {
+        case Polnoc:
+            if(robot->orientacja == Polnoc) {
+                jedzProsto(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzPrawo(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzTyl(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzLewo(robot);
+            }
+        break;
+
+        case Zachod:
+            if(robot->orientacja == Polnoc) {
+                jedzLewo(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzProsto(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzPrawo(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzTyl(robot);
+            }
+        break;
+
+        case Poludnie:
+            if(robot->orientacja == Polnoc) {
+                jedzTyl(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzLewo(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzProsto(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzPrawo(robot);
+            }
+        break;
+
+        case Wschod:
+            if(robot->orientacja == Polnoc) {
+                jedzPrawo(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzTyl(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzLewo(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzProsto(robot);
+            }
+        break;
+    }
+}
+
 void skanujObszar(Robot* robot) {
 	void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 
