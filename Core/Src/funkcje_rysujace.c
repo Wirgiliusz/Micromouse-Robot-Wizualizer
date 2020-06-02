@@ -32,6 +32,8 @@ void rysujInformacje() {
 	BSP_LCD_DisplayStringAt(0, 250, (uint8_t*)"EnkoderR: ", LEFT_MODE);
 	BSP_LCD_DisplayStringAt(0, 260, (uint8_t*)"EnkoderL: ", LEFT_MODE);
 	BSP_LCD_DisplayStringAt(0, 270, (uint8_t*)"Czujniki: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 280, (uint8_t*)"Predkosc: ", LEFT_MODE);
+	BSP_LCD_DisplayStringAt(0, 300, (uint8_t*)"DEBUG: ", LEFT_MODE);
 }
 
 void rysujPozycje(int x, int y) {
@@ -51,7 +53,15 @@ void rysujPredkosc(int predkosc) {
 	sprintf(predkoscStr, "%d", predkosc);
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
 	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
-	BSP_LCD_DisplayStringAt(70, 260, (uint8_t*)predkoscStr, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(70, 280, (uint8_t*)predkoscStr, LEFT_MODE);
+}
+
+void rysujDebug(int wiadomosc) {
+	char debugStr[5];
+	sprintf(debugStr, "%d", wiadomosc);
+	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+	BSP_LCD_SetBackColor(LCD_COLOR_BLACK);
+	BSP_LCD_DisplayStringAt(70, 300, (uint8_t*)debugStr, LEFT_MODE);
 }
 
 void rysujEnkoder(int impulsy, int lewy) {

@@ -85,11 +85,17 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 // Przerwanie dla odebrania danych z modulu BT
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	switch(atoi(&odebraneDane)) {
-	case 0:
-		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
-	break;
 	case 1:
-		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+		rysujDebug(1);
+		HAL_UART_Transmit(&huart1, "elo1", 4, 100);
+	break;
+	case 2:
+		rysujDebug(2);
+		HAL_UART_Transmit(&huart1, "elo2", 4, 100);
+	break;
+	case 3:
+		rysujDebug(3);
+		HAL_UART_Transmit(&huart1, "elo3", 4, 100);
 	break;
 	}
 	HAL_UART_Receive_IT(&huart1, &odebraneDane, 1);
@@ -189,8 +195,8 @@ int main(void)
 	// Symulacja ruchu robota przez labirynt //
 
 	if(!narysowano) {
-		HAL_Delay(3000);
-		przeszukajLabirynt(&robot);
+		//HAL_Delay(3000);
+		//przeszukajLabirynt(&robot);
 		/*
 		jedzProsto(&robot);
 		jedzProsto(&robot);

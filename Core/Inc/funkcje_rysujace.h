@@ -24,5 +24,6 @@ void rysujKwadratPelny(int posX, int posY);
 void rysujPolaczeniePrzedWejsciem(Robot* robot);
 void rysujPolaczeniePoWejsciu(Robot* robot);
 void rysujPolaczenia(Robot* robot);
+void rysujDebug(int wiedomosc);
 
 #endif /* INC_FUNKCJE_RYSUJACE_H_ */
