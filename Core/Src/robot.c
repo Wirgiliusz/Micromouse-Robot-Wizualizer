@@ -43,7 +43,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	robot->e2_poprzednie = 0;
 	int u2 = 0;
 	float Kp2 = 0.01;
-	float Kd2 = 1;
+	float Kd2 = 3;
 
 	int V0 = 300;
 
@@ -92,14 +92,18 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 			robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 		}
 		skanujObszar(robot);
-		robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3] - 50;
-		robot->odlegloscCzujnikaL = robot->odczytCzujnikow[2];
-		if(robot->odlegloscCzujnikaR <= 3300 && robot->odlegloscCzujnikaL <= 3300) {
-			robot->e2 = robot->odlegloscCzujnikaL - robot->odlegloscCzujnikaR;
+		if(czyObrot == 0) {
+			robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3] - 50;
+			robot->odlegloscCzujnikaL = robot->odczytCzujnikow[2];
+
+			if(robot->odlegloscCzujnikaR <= 3300 && robot->odlegloscCzujnikaL <= 3300) {
+				robot->e2 = robot->odlegloscCzujnikaL - robot->odlegloscCzujnikaR;
+			}
+			else {
+				robot->e2 = 0;
+			}
 		}
-		else {
-			robot->e2 = 0;
-		}
+
 		robot->e1 = robot->impulsyEnkoderaL - robot->impulsyEnkoderaR;
 
 		u1 = Kp1 * robot->e1 + Kd1 * (robot->e1 - robot->e1_poprzednie);
@@ -110,11 +114,11 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 		else if(u1 < -300) {
 			u1 = - 300;
 		}
-		if(u2 > 300) {
-			u2 = 300;
+		if(u2 > 100) {
+			u2 = 100;
 		}
-		else if(u2 < -300) {
-			u2 = -300;
+		else if(u2 < -100) {
+			u2 = -100;
 		}
 
 		if(czyObrot == 0) {
@@ -159,12 +163,11 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 }
 
 void jedzProsto(Robot* robot) {
+	HAL_Delay(500);
+	rysujKwadratPusty(robot->posX, robot->posY);
 
 	regulator(robot, 17.5, 0, Prawo);
 
-	rysujPolaczeniePrzedWejsciem(robot);
-	HAL_Delay(500);
-	rysujKwadratPusty(robot->posX, robot->posY);
 	switch(robot->orientacja) {
 	case Polnoc:
 		robot->posY--;
@@ -181,9 +184,8 @@ void jedzProsto(Robot* robot) {
 	}
 
 	rysujKwadratPelny(robot->posX, robot->posY);
-	rysujPolaczeniePoWejsciu(robot);
-
 	rysujPozycje(robot->posX, robot->posY);
+	HAL_Delay(1500);
 }
 
 void obroc(Robot* robot, enum Strony strona) {
@@ -191,12 +193,12 @@ void obroc(Robot* robot, enum Strony strona) {
 	case Lewo:
 		robot->orientacja++;
 		robot->orientacja %=4;
-		regulator(robot, 8.247, 1, Lewo);
+		regulator(robot, 8.1, 1, Lewo);
 		break;
 	case Prawo:
 		robot->orientacja--;
 		robot->orientacja %=4;
-		regulator(robot, 8.247, 1, Prawo);
+		regulator(robot, 8.1, 1, Prawo);
 		break;
 	}
 }
@@ -306,7 +308,7 @@ void skanujObszar(Robot* robot) {
 		HAL_ADC_Start(&hadc1);
 	}
 
-	if(robot->odczytCzujnikow[0] > 3300 || robot->odczytCzujnikow[1] > 3300) {
+	if(robot->odczytCzujnikow[0] > 3200 || robot->odczytCzujnikow[1] > 3300) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
@@ -323,7 +325,7 @@ void skanujObszar(Robot* robot) {
 		}
 
 	}
-	if(robot->odczytCzujnikow[2] > 3300) {
+	if(robot->odczytCzujnikow[2] > 3200) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
@@ -339,7 +341,7 @@ void skanujObszar(Robot* robot) {
 			break;
 		}
 	}
-	if(robot->odczytCzujnikow[3] > 3300) {
+	if(robot->odczytCzujnikow[3] > 3200) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
@@ -355,6 +357,21 @@ void skanujObszar(Robot* robot) {
 			break;
 		}
 	}
+
+	switch (robot->orientacja) {
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		}
 
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
 }
@@ -429,6 +446,8 @@ void przeszukajLabirynt(Robot* robot) {
         }
         if(kierunek == 1) {
             skanujObszar(robot);
+            rysujPolaczenia(robot);
+
             robot->obecnosc[robot->posY][robot->posX] = obecnyNumer;
 
             if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->obecnosc[robot->posY-1][robot->posX] == 0)) {
@@ -452,6 +471,7 @@ void przeszukajLabirynt(Robot* robot) {
             }
         } else {
             skanujObszar(robot);
+            //rysujPolaczenia(robot);
 
             if(robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && obecnyNumer-1 == robot->obecnosc[robot->posY-1][robot->posX]) {
                 jedzKierunek(robot, Polnoc);

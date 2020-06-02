@@ -190,12 +190,15 @@ int main(void)
 
 	if(!narysowano) {
 		HAL_Delay(3000);
+		przeszukajLabirynt(&robot);
+		/*
 		jedzProsto(&robot);
 		jedzProsto(&robot);
 		jedzPrawo(&robot);
 		jedzLewo(&robot);
 		jedzLewo(&robot);
 		jedzTyl(&robot);
+		*/
 
 		narysowano = 1;
     }

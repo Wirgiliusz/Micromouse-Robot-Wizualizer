@@ -139,3 +139,24 @@ void rysujPolaczeniePoWejsciu(Robot* robot){
 		break;
 	}
 }
+
+void rysujPolaczenia(Robot* robot) {
+	if(robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) {
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30, 2, 4);
+	}
+	if(robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) {
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+		BSP_LCD_FillRect(robot->posX*30, robot->posY*30+14, 4, 2);
+	}
+	if(robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) {
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+		BSP_LCD_FillRect(robot->posX*30+26, robot->posY*30+14, 4, 2);
+
+	}
+	if(robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) {
+		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
+		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30+26, 2, 4);
+
+	}
+}
