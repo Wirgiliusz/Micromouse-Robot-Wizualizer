@@ -321,6 +321,39 @@ void skanujObszar(Robot* robot) {
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
 }
 
+void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY) {
+   // Czy osiagniety zostal start
+   if(posX == 0 && posY == 0) {
+       return;
+   }
+
+    // Przejscie do kolejnego pola w zaleznosci od mozliwych polaczen
+    if(robot->labiryntPoznawany[posY][posX] & NORTH) {
+        if(!robot->tabSciezki[posY-1][posX] || robot->tabSciezki[posY-1][posX] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY-1][posX] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY-1);
+        }
+    }
+    if(robot->labiryntPoznawany[posY][posX] & WEST) {
+        if(!robot->tabSciezki[posY][posX-1] || robot->tabSciezki[posY][posX-1] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY][posX-1] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX-1, posY);
+        }
+    }
+    if(robot->labiryntPoznawany[posY][posX] & SOUTH) {
+        if(!robot->tabSciezki[posY+1][posX] || robot->tabSciezki[posY+1][posX] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY+1][posX] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY+1);
+        }
+    }
+    if(robot->labiryntPoznawany[posY][posX] & EAST) {
+        if(!robot->tabSciezki[posY][posX+1] || robot->tabSciezki[posY][posX+1] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY][posX+1] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX+1, posY);
+        }
+    }
+}
+
 int odlegloscNaImpulsy(int odleglosc) {
 	return ((odleglosc)*1920)/(2*3.141592*7.96);
 }
