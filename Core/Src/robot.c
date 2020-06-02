@@ -362,6 +362,38 @@ void znajdzNajkrotszaSciezkeStart(Robot* robot) {
     robot->tabSciezki[posX][posY] = 0;
 }
 
+void przejedzLabirynt(Robot* robot) {
+    printf("Zaczynam przejazd wzdluz sciezki\n");
+    printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
+
+    while(!(robot->posX == KONIEC && robot->posY == KONIEC)) {
+        if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->tabSciezki[robot->posY-1][robot->posX] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Polnoc);
+            printf("Znalazlem droge Polnoc \t\t");
+        }
+        else if((robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) && (robot->tabSciezki[robot->posY][robot->posX-1] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Zachod);
+            printf("Znalazlem droge Zachod \t\t");
+
+        }
+        else if((robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) && (robot->tabSciezki[robot->posY+1][robot->posX] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Poludnie);
+            printf("Znalazlem droge Poludnie \t");
+
+        }
+        else if((robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) && (robot->tabSciezki[robot->posY][robot->posX+1] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Wschod);
+            printf("Znalazlem droge Wschod \t\t");
+
+        }
+        printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
+
+    }
+
+    printf("Przejazd wzdluz sciezki zakonczony\n");
+    printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
+}
+
 int odlegloscNaImpulsy(int odleglosc) {
 	return ((odleglosc)*1920)/(2*3.141592*7.96);
 }
