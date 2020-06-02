@@ -403,55 +403,35 @@ void znajdzNajkrotszaSciezkeStart(Robot* robot) {
 }
 
 void przejedzLabirynt(Robot* robot) {
-    printf("Zaczynam przejazd wzdluz sciezki\n");
-    printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
-
     while(!(robot->posX == KONIEC && robot->posY == KONIEC)) {
         if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->tabSciezki[robot->posY-1][robot->posX] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
             jedzKierunek(robot, Polnoc);
-            printf("Znalazlem droge Polnoc \t\t");
         }
         else if((robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) && (robot->tabSciezki[robot->posY][robot->posX-1] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
             jedzKierunek(robot, Zachod);
-            printf("Znalazlem droge Zachod \t\t");
-
         }
         else if((robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) && (robot->tabSciezki[robot->posY+1][robot->posX] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
             jedzKierunek(robot, Poludnie);
-            printf("Znalazlem droge Poludnie \t");
-
         }
         else if((robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) && (robot->tabSciezki[robot->posY][robot->posX+1] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
             jedzKierunek(robot, Wschod);
-            printf("Znalazlem droge Wschod \t\t");
-
         }
-        printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
-
     }
-
-    printf("Przejazd wzdluz sciezki zakonczony\n");
-    printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
 }
 
 void przeszukajLabirynt(Robot* robot) {
     int poznane = 0;
     int kierunek = 1;
-    int strona = 1;
     int obecnyNumer = 0;
-    int najmniejszy = 100;
     robot->posY = 0;
     robot->posX = 0;
     while(1){
         if(poznane >= 16){
-        //if(poznane >= 64){
             break;
         }
-        //printf("X: %d Y: %d numer: %d obecnosc: %d poznane: %d\n", robot->posX, robot->posY, obecnyNumer, robot->obecnosc[robot->posY][robot->posX], poznane);
         if(kierunek == 1) {
             skanujPole(robot);
             robot->obecnosc[robot->posY][robot->posX] = obecnyNumer;
-            //printf("X: %d Y: %d numer: %d obecnosc: %d poznane: %d\n", robot->posX, robot->posY, obecnyNumer, robot->obecnosc[robot->posY][robot->posX], poznane);
 
             if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->obecnosc[robot->posY-1][robot->posX] == 0)) {
                 jedzKierunek(robot, Polnoc);
