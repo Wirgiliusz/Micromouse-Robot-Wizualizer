@@ -434,7 +434,70 @@ void przejedzLabirynt(Robot* robot) {
     printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
 }
 
+void przeszukajLabirynt(Robot* robot) {
+    int poznane = 0;
+    int kierunek = 1;
+    int strona = 1;
+    int obecnyNumer = 0;
+    int najmniejszy = 100;
+    robot->posY = 0;
+    robot->posX = 0;
+    while(1){
+        if(poznane >= 16){
+        //if(poznane >= 64){
+            break;
+        }
+        //printf("X: %d Y: %d numer: %d obecnosc: %d poznane: %d\n", robot->posX, robot->posY, obecnyNumer, robot->obecnosc[robot->posY][robot->posX], poznane);
+        if(kierunek == 1) {
+            skanujPole(robot);
+            robot->obecnosc[robot->posY][robot->posX] = obecnyNumer;
+            //printf("X: %d Y: %d numer: %d obecnosc: %d poznane: %d\n", robot->posX, robot->posY, obecnyNumer, robot->obecnosc[robot->posY][robot->posX], poznane);
 
+            if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->obecnosc[robot->posY-1][robot->posX] == 0)) {
+                jedzKierunek(robot, Polnoc);
+                ++poznane;
+                ++obecnyNumer;
+            } else if((robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) && (robot->obecnosc[robot->posY][robot->posX+1] == 0)) {
+                jedzKierunek(robot, Wschod);
+                ++poznane;
+                ++obecnyNumer;
+            } else if((robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) && (robot->obecnosc[robot->posY][robot->posX-1] == 0)) {
+                jedzKierunek(robot, Zachod);
+                ++poznane;
+                ++obecnyNumer;
+            } else if((robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) && (robot->obecnosc[robot->posY+1][robot->posX] == 0)) {
+                jedzKierunek(robot, Poludnie);
+                ++poznane;
+                ++obecnyNumer;
+            } else {
+                kierunek = 0;
+            }
+        } else {
+            skanujPole(robot);
+
+            if(robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && obecnyNumer-1 == robot->obecnosc[robot->posY-1][robot->posX]) {
+                jedzKierunek(robot, Polnoc);
+                obecnyNumer--;
+            } else if(robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH && obecnyNumer-1 == robot->obecnosc[robot->posY+1][robot->posX]) {
+                jedzKierunek(robot, Poludnie);
+                obecnyNumer--;
+            } else if(robot->labiryntPoznawany[robot->posY][robot->posX] & WEST && obecnyNumer-1 == robot->obecnosc[robot->posY][robot->posX-1]) {
+                jedzKierunek(robot, Zachod);
+                obecnyNumer--;
+            } else if(robot->labiryntPoznawany[robot->posY][robot->posX] & EAST && obecnyNumer-1 == robot->obecnosc[robot->posY][robot->posX+1]) {
+                jedzKierunek(robot, Wschod);
+                obecnyNumer--;
+            }
+            skanujPole(robot);
+            if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && robot->obecnosc[robot->posY-1][robot->posX] == 0) ||
+                (robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH && robot->obecnosc[robot->posY+1][robot->posX] == 0) ||
+                (robot->labiryntPoznawany[robot->posY][robot->posX] & WEST && robot->obecnosc[robot->posY][robot->posX-1] == 0) ||
+                (robot->labiryntPoznawany[robot->posY][robot->posX] & EAST && robot->obecnosc[robot->posY][robot->posX+1] == 0)) {
+                kierunek = 1;
+            }
+        }
+    }
+}
 
 int odlegloscNaImpulsy(int odleglosc) {
 	return ((odleglosc)*1920)/(2*3.141592*7.96);
