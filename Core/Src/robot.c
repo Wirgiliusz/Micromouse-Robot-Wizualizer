@@ -11,6 +11,23 @@
 
 #define MAX_PREDKOSC 1000
 
+Robot konstruktorRobota(int poczatkoweX, int poczatkoweY, enum Orientacje poczatkowaOrientacja) {
+    Robot robot;
+    robot.posX = poczatkoweX;
+    robot.posY = poczatkoweY;
+    robot.orientacja = poczatkowaOrientacja;
+
+    unsigned char labiryntPoznawany[4][4];
+
+    for(int i=0; i<4; i++) {
+    	for(int j=0; j<4; j++) {
+            robot.tabSciezki[i][j] = 0;
+            robot.obecnosc[i][j] = 0;
+            robot.labiryntPoznawany[i][j] = 0;
+        }
+    }
+    return robot;
+}
 
 void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) {
 	unsigned int impulsyNaZadanaOdleglosc = odlegloscNaImpulsy(odleglosc);
@@ -202,6 +219,70 @@ void jedzTyl(Robot* robot) {
 	jedzProsto(robot);
 }
 
+void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
+    switch(kierunek) {
+        case Polnoc:
+            if(robot->orientacja == Polnoc) {
+                jedzProsto(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzPrawo(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzTyl(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzLewo(robot);
+            }
+        break;
+
+        case Zachod:
+            if(robot->orientacja == Polnoc) {
+                jedzLewo(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzProsto(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzPrawo(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzTyl(robot);
+            }
+        break;
+
+        case Poludnie:
+            if(robot->orientacja == Polnoc) {
+                jedzTyl(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzLewo(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzProsto(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzPrawo(robot);
+            }
+        break;
+
+        case Wschod:
+            if(robot->orientacja == Polnoc) {
+                jedzPrawo(robot);
+            }
+            else if(robot->orientacja == Zachod) {
+                jedzTyl(robot);
+            }
+            else if(robot->orientacja == Poludnie) {
+                jedzLewo(robot);
+            }
+            else if(robot->orientacja == Wschod) {
+                jedzProsto(robot);
+            }
+        break;
+    }
+}
+
 void skanujObszar(Robot* robot) {
 	void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
 
@@ -227,17 +308,175 @@ void skanujObszar(Robot* robot) {
 		HAL_ADC_Start(&hadc1);
 	}
 
-	if(robot->odczytCzujnikow[0] <= 3300 || robot->odczytCzujnikow[1]) {
-		// Sciana z przodu
+	if(robot->odczytCzujnikow[0] > 3300 || robot->odczytCzujnikow[1] > 3300) {
+		switch (robot->orientacja){
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		}
+
 	}
-	if(robot->odczytCzujnikow[2] <= 3300) {
-		// Sciana po lewej
+	if(robot->odczytCzujnikow[2] > 3300) {
+		switch (robot->orientacja){
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		}
 	}
-	if(robot->odczytCzujnikow[3] <= 3300) {
-		// Sciana po prawej
+	if(robot->odczytCzujnikow[3] > 3300) {
+		switch (robot->orientacja){
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		}
 	}
 
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
+}
+
+void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY) {
+   // Czy osiagniety zostal start
+   if(posX == 0 && posY == 0) {
+       return;
+   }
+
+    // Przejscie do kolejnego pola w zaleznosci od mozliwych polaczen
+    if(robot->labiryntPoznawany[posY][posX] & NORTH) {
+        if(!robot->tabSciezki[posY-1][posX] || robot->tabSciezki[posY-1][posX] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY-1][posX] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY-1);
+        }
+    }
+    if(robot->labiryntPoznawany[posY][posX] & WEST) {
+        if(!robot->tabSciezki[posY][posX-1] || robot->tabSciezki[posY][posX-1] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY][posX-1] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX-1, posY);
+        }
+    }
+    if(robot->labiryntPoznawany[posY][posX] & SOUTH) {
+        if(!robot->tabSciezki[posY+1][posX] || robot->tabSciezki[posY+1][posX] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY+1][posX] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY+1);
+        }
+    }
+    if(robot->labiryntPoznawany[posY][posX] & EAST) {
+        if(!robot->tabSciezki[posY][posX+1] || robot->tabSciezki[posY][posX+1] > robot->tabSciezki[posY][posX] ) {
+            robot->tabSciezki[posY][posX+1] = robot->tabSciezki[posY][posX] + 1;
+            znajdzNajkrotszaSciezkeRekurencja(robot, posX+1, posY);
+        }
+    }
+}
+
+void znajdzNajkrotszaSciezkeStart(Robot* robot) {
+    int posX = KONIEC;
+    int posY = KONIEC;
+
+    znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY);
+    robot->tabSciezki[posX][posY] = 0;
+}
+
+void przejedzLabirynt(Robot* robot) {
+    while(!(robot->posX == KONIEC && robot->posY == KONIEC)) {
+        if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->tabSciezki[robot->posY-1][robot->posX] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Polnoc);
+        }
+        else if((robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) && (robot->tabSciezki[robot->posY][robot->posX-1] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Zachod);
+        }
+        else if((robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) && (robot->tabSciezki[robot->posY+1][robot->posX] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Poludnie);
+        }
+        else if((robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) && (robot->tabSciezki[robot->posY][robot->posX+1] == robot->tabSciezki[robot->posY][robot->posX] - 1)) {
+            jedzKierunek(robot, Wschod);
+        }
+    }
+}
+
+void przeszukajLabirynt(Robot* robot) {
+    int poznane = 0;
+    int kierunek = 1;
+    int obecnyNumer = 0;
+    robot->posY = 0;
+    robot->posX = 0;
+    while(1){
+        if(poznane >= 16){
+            break;
+        }
+        if(kierunek == 1) {
+            skanujPole(robot);
+            robot->obecnosc[robot->posY][robot->posX] = obecnyNumer;
+
+            if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->obecnosc[robot->posY-1][robot->posX] == 0)) {
+                jedzKierunek(robot, Polnoc);
+                ++poznane;
+                ++obecnyNumer;
+            } else if((robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) && (robot->obecnosc[robot->posY][robot->posX+1] == 0)) {
+                jedzKierunek(robot, Wschod);
+                ++poznane;
+                ++obecnyNumer;
+            } else if((robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) && (robot->obecnosc[robot->posY][robot->posX-1] == 0)) {
+                jedzKierunek(robot, Zachod);
+                ++poznane;
+                ++obecnyNumer;
+            } else if((robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) && (robot->obecnosc[robot->posY+1][robot->posX] == 0)) {
+                jedzKierunek(robot, Poludnie);
+                ++poznane;
+                ++obecnyNumer;
+            } else {
+                kierunek = 0;
+            }
+        } else {
+            skanujPole(robot);
+
+            if(robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && obecnyNumer-1 == robot->obecnosc[robot->posY-1][robot->posX]) {
+                jedzKierunek(robot, Polnoc);
+                obecnyNumer--;
+            } else if(robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH && obecnyNumer-1 == robot->obecnosc[robot->posY+1][robot->posX]) {
+                jedzKierunek(robot, Poludnie);
+                obecnyNumer--;
+            } else if(robot->labiryntPoznawany[robot->posY][robot->posX] & WEST && obecnyNumer-1 == robot->obecnosc[robot->posY][robot->posX-1]) {
+                jedzKierunek(robot, Zachod);
+                obecnyNumer--;
+            } else if(robot->labiryntPoznawany[robot->posY][robot->posX] & EAST && obecnyNumer-1 == robot->obecnosc[robot->posY][robot->posX+1]) {
+                jedzKierunek(robot, Wschod);
+                obecnyNumer--;
+            }
+            skanujPole(robot);
+            if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && robot->obecnosc[robot->posY-1][robot->posX] == 0) ||
+                (robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH && robot->obecnosc[robot->posY+1][robot->posX] == 0) ||
+                (robot->labiryntPoznawany[robot->posY][robot->posX] & WEST && robot->obecnosc[robot->posY][robot->posX-1] == 0) ||
+                (robot->labiryntPoznawany[robot->posY][robot->posX] & EAST && robot->obecnosc[robot->posY][robot->posX+1] == 0)) {
+                kierunek = 1;
+            }
+        }
+    }
 }
 
 int odlegloscNaImpulsy(int odleglosc) {
