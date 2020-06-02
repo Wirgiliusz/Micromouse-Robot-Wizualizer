@@ -308,14 +308,54 @@ void skanujObszar(Robot* robot) {
 		HAL_ADC_Start(&hadc1);
 	}
 
-	if(robot->odczytCzujnikow[0] <= 3300 || robot->odczytCzujnikow[1]) {
-		// Sciana z przodu
+	if(robot->odczytCzujnikow[0] > 3300 || robot->odczytCzujnikow[1] > 3300) {
+		switch (robot->orientacja){
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		}
+
 	}
-	if(robot->odczytCzujnikow[2] <= 3300) {
-		// Sciana po lewej
+	if(robot->odczytCzujnikow[2] > 3300) {
+		switch (robot->orientacja){
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		}
 	}
-	if(robot->odczytCzujnikow[3] <= 3300) {
-		// Sciana po prawej
+	if(robot->odczytCzujnikow[3] > 3300) {
+		switch (robot->orientacja){
+		case Polnoc:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+			break;
+		case Zachod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+			break;
+		case Poludnie:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+			break;
+		case Wschod:
+			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+			break;
+		}
 	}
 
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
@@ -393,6 +433,8 @@ void przejedzLabirynt(Robot* robot) {
     printf("Przejazd wzdluz sciezki zakonczony\n");
     printf("PosX: %d PosY: %d\n", robot->posX, robot->posY);
 }
+
+
 
 int odlegloscNaImpulsy(int odleglosc) {
 	return ((odleglosc)*1920)/(2*3.141592*7.96);
