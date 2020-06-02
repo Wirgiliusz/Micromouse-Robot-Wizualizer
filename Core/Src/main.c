@@ -58,7 +58,7 @@
 /* USER CODE BEGIN PV */
 int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
 int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
-Robot robot = {0, 0, Wschod}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
+Robot robot; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
 /* USER CODE END PV */
 
@@ -110,7 +110,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	robot = konstruktorRobota(0, 0, Wschod);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/

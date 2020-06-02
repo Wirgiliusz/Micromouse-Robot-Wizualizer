@@ -17,8 +17,6 @@ Robot konstruktorRobota(int poczatkoweX, int poczatkoweY, enum Orientacje poczat
     robot.posY = poczatkoweY;
     robot.orientacja = poczatkowaOrientacja;
 
-    unsigned char labiryntPoznawany[4][4];
-
     for(int i=0; i<4; i++) {
     	for(int j=0; j<4; j++) {
             robot.tabSciezki[i][j] = 0;
@@ -430,7 +428,7 @@ void przeszukajLabirynt(Robot* robot) {
             break;
         }
         if(kierunek == 1) {
-            skanujPole(robot);
+            skanujObszar(robot);
             robot->obecnosc[robot->posY][robot->posX] = obecnyNumer;
 
             if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) && (robot->obecnosc[robot->posY-1][robot->posX] == 0)) {
@@ -453,7 +451,7 @@ void przeszukajLabirynt(Robot* robot) {
                 kierunek = 0;
             }
         } else {
-            skanujPole(robot);
+            skanujObszar(robot);
 
             if(robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && obecnyNumer-1 == robot->obecnosc[robot->posY-1][robot->posX]) {
                 jedzKierunek(robot, Polnoc);
@@ -468,7 +466,7 @@ void przeszukajLabirynt(Robot* robot) {
                 jedzKierunek(robot, Wschod);
                 obecnyNumer--;
             }
-            skanujPole(robot);
+            skanujObszar(robot);
             if((robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH && robot->obecnosc[robot->posY-1][robot->posX] == 0) ||
                 (robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH && robot->obecnosc[robot->posY+1][robot->posX] == 0) ||
                 (robot->labiryntPoznawany[robot->posY][robot->posX] & WEST && robot->obecnosc[robot->posY][robot->posX-1] == 0) ||
