@@ -8,6 +8,13 @@
 #ifndef INC_ROBOT_H_
 #define INC_ROBOT_H_
 
+#define NORTH   1 //00001000
+#define WEST    2 //00000100
+#define SOUTH   4 //00000010
+#define EAST    8 //00000001
+
+#define KONIEC  2 //00000001
+
 typedef struct Robot {
 	int posX;
 	int posY;
