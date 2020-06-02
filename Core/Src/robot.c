@@ -11,6 +11,23 @@
 
 #define MAX_PREDKOSC 1000
 
+Robot konstruktorRobota(int poczatkoweX, int poczatkoweY, enum Orientacje poczatkowaOrientacja) {
+    Robot robot;
+    robot.posX = poczatkoweX;
+    robot.posY = poczatkoweY;
+    robot.orientacja = poczatkowaOrientacja;
+
+    unsigned char labiryntPoznawany[4][4];
+
+    for(int i=0; i<4; i++) {
+    	for(int j=0; j<4; j++) {
+            robot.tabSciezki[i][j] = 0;
+            robot.obecnosc[i][j] = 0;
+            robot.labiryntPoznawany[i][j] = 0;
+        }
+    }
+    return robot;
+}
 
 void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) {
 	unsigned int impulsyNaZadanaOdleglosc = odlegloscNaImpulsy(odleglosc);

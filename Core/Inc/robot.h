@@ -29,7 +29,6 @@ typedef struct Robot {
 	int e1_poprzednie;
 	int e2;
 	int e2_poprzednie;
-	unsigned char tabLabiryntuBin[4][4];
 	unsigned char labiryntPoznawany[4][4];
 	int tabSciezki[4][4];
 	int obecnosc[4][4];
