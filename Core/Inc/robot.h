@@ -16,6 +16,7 @@
 #define KONIEC  2 //00000001
 
 typedef struct Robot {
+	int jedz;
 	int posX;
 	int posY;
 	enum Orientacje{Polnoc, Zachod, Poludnie, Wschod} orientacja;

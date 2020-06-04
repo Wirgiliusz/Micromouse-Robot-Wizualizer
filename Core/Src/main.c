@@ -57,7 +57,7 @@
 
 /* USER CODE BEGIN PV */
 int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
-int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
+int przejechano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
 Robot robot; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
 /* USER CODE END PV */
@@ -85,17 +85,23 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 // Przerwanie dla odebrania danych z modulu BT
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	switch(atoi(&odebraneDane)) {
+	case 0:
+		rysujDebug(0);
+		robot.jedz = 0;
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
+	break;
 	case 1:
 		rysujDebug(1);
-		//HAL_UART_Transmit(&huart1, "elo1", 1, 100);
+		robot.jedz = 1;
 	break;
 	case 2:
 		rysujDebug(2);
-		//HAL_UART_Transmit(&huart1, "elo2", 1, 100);
 	break;
 	case 3:
 		rysujDebug(3);
-		//HAL_UART_Transmit(&huart1, "elo3", 1, 100);
 	break;
 	}
 	HAL_UART_Receive_IT(&huart1, &odebraneDane, 1);
@@ -188,13 +194,18 @@ int main(void)
   while (1)
   {
 	skanujObszar(&robot);
+	if(robot.jedz == 0) {
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
 	// Symulacja ruchu robota przez labirynt //
-	if(!narysowano) {
-		//HAL_Delay(3000);
+	if(!przejechano) {
 		//przeszukajLabirynt(&robot);
 		/*
 		jedzProsto(&robot);
@@ -204,12 +215,10 @@ int main(void)
 		jedzLewo(&robot);
 		jedzTyl(&robot);
 		*/
-
-		narysowano = 1;
+		przejechano = 1;
     }
-	wyslijWiadomosc(&robot, Polnoc);
+	przeszukajLabirynt(&robot);
 
-	HAL_Delay(3000);
   }
   /* USER CODE END 3 */
 }

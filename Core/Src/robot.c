@@ -14,6 +14,7 @@
 
 Robot konstruktorRobota(int poczatkoweX, int poczatkoweY, enum Orientacje poczatkowaOrientacja) {
     Robot robot;
+    robot.jedz = 0;
     robot.posX = poczatkoweX;
     robot.posY = poczatkoweY;
     robot.orientacja = poczatkowaOrientacja;
@@ -60,7 +61,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 	robot->impulsyEnkoderaR = __HAL_TIM_GetCounter(&htim5);
 	robot->impulsyEnkoderaL = __HAL_TIM_GetCounter(&htim3);
 	skanujObszar(robot);
-	robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3] - 50;
+	robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3];
 	robot->odlegloscCzujnikaL = robot->odczytCzujnikow[2];
 
 	// Skok
@@ -83,6 +84,9 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 
 	// Regulacja
 	while(praweOK == 0 || leweOK == 0) {
+		if(robot->jedz == 0) {
+			return;
+		}
 		rysujEnkoder(robot->impulsyEnkoderaR, 0);
 		rysujEnkoder(robot->impulsyEnkoderaL, 1);
 
@@ -94,7 +98,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 		}
 		skanujObszar(robot);
 		if(czyObrot == 0) {
-			robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3] - 50;
+			robot->odlegloscCzujnikaR = robot->odczytCzujnikow[3];
 			robot->odlegloscCzujnikaL = robot->odczytCzujnikow[2];
 
 			if(robot->odlegloscCzujnikaR <= 3300 && robot->odlegloscCzujnikaL <= 3300) {
@@ -109,6 +113,7 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 
 		u1 = Kp1 * robot->e1 + Kd1 * (robot->e1 - robot->e1_poprzednie);
 		u2 = Kp2 * robot->e2 + Kd2 * (robot->e2 - robot->e2_poprzednie);
+		u2 = 0;
 		if(u1 > 300) {
 			u1 = 300;
 		}
@@ -235,6 +240,7 @@ void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
             else if(robot->orientacja == Wschod) {
                 jedzLewo(robot);
             }
+            wyslijWiadomosc(robot, Polnoc);
         break;
 
         case Zachod:
@@ -250,6 +256,7 @@ void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
             else if(robot->orientacja == Wschod) {
                 jedzTyl(robot);
             }
+            wyslijWiadomosc(robot, Zachod);
         break;
 
         case Poludnie:
@@ -265,6 +272,7 @@ void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
             else if(robot->orientacja == Wschod) {
                 jedzPrawo(robot);
             }
+            wyslijWiadomosc(robot, Poludnie);
         break;
 
         case Wschod:
@@ -280,6 +288,7 @@ void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
             else if(robot->orientacja == Wschod) {
                 jedzProsto(robot);
             }
+            wyslijWiadomosc(robot, Wschod);
         break;
     }
 }
@@ -309,7 +318,7 @@ void skanujObszar(Robot* robot) {
 		HAL_ADC_Start(&hadc1);
 	}
 
-	if(robot->odczytCzujnikow[0] > 3200 || robot->odczytCzujnikow[1] > 3300) {
+	if(robot->odczytCzujnikow[0] > 3100 || robot->odczytCzujnikow[1] > 3400) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
@@ -326,7 +335,7 @@ void skanujObszar(Robot* robot) {
 		}
 
 	}
-	if(robot->odczytCzujnikow[2] > 3200) {
+	if(robot->odczytCzujnikow[2] > 3100) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
@@ -342,7 +351,7 @@ void skanujObszar(Robot* robot) {
 			break;
 		}
 	}
-	if(robot->odczytCzujnikow[3] > 3200) {
+	if(robot->odczytCzujnikow[3] > 3100) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
@@ -442,6 +451,10 @@ void przeszukajLabirynt(Robot* robot) {
     robot->posY = 0;
     robot->posX = 0;
     while(1){
+    	if(robot->jedz == 0) {
+			return;
+		}
+
         if(poznane >= 16){
             break;
         }
