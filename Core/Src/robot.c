@@ -8,6 +8,7 @@
 #include "tim.h"
 #include "funkcje_rysujace.h"
 #include "adc.h"
+#include "usart.h"
 
 #define MAX_PREDKOSC 1000
 
@@ -500,3 +501,21 @@ void przeszukajLabirynt(Robot* robot) {
 int odlegloscNaImpulsy(int odleglosc) {
 	return ((odleglosc)*1920)/(2*3.141592*7.96);
 }
+
+void wyslijWiadomosc(Robot* robot, enum Orientacje kierunek) {
+	switch(kierunek) {
+		case Polnoc:
+			HAL_UART_Transmit(&huart1, "0", 1, 100);
+		break;
+		case Zachod:
+			HAL_UART_Transmit(&huart1, "1", 1, 100);
+		break;
+		case Poludnie:
+			HAL_UART_Transmit(&huart1, "2", 1, 100);
+		break;
+		case Wschod:
+			HAL_UART_Transmit(&huart1, "3", 1, 100);
+		break;
+	}
+}
+

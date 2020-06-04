@@ -52,4 +52,6 @@ void przeszukajLabirynt(Robot* robot);
 
 int odlegloscNaImpulsy(int odleglosc);
 
+void wyslijWiadomosc(Robot* robot, enum Orientacje kierunek);
+
 #endif /* INC_ROBOT_H_ */

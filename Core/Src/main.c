@@ -87,15 +87,15 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	switch(atoi(&odebraneDane)) {
 	case 1:
 		rysujDebug(1);
-		HAL_UART_Transmit(&huart1, "elo1", 4, 100);
+		//HAL_UART_Transmit(&huart1, "elo1", 1, 100);
 	break;
 	case 2:
 		rysujDebug(2);
-		HAL_UART_Transmit(&huart1, "elo2", 4, 100);
+		//HAL_UART_Transmit(&huart1, "elo2", 1, 100);
 	break;
 	case 3:
 		rysujDebug(3);
-		HAL_UART_Transmit(&huart1, "elo3", 4, 100);
+		//HAL_UART_Transmit(&huart1, "elo3", 1, 100);
 	break;
 	}
 	HAL_UART_Receive_IT(&huart1, &odebraneDane, 1);
@@ -193,7 +193,6 @@ int main(void)
     /* USER CODE BEGIN 3 */
 
 	// Symulacja ruchu robota przez labirynt //
-
 	if(!narysowano) {
 		//HAL_Delay(3000);
 		//przeszukajLabirynt(&robot);
@@ -208,7 +207,9 @@ int main(void)
 
 		narysowano = 1;
     }
+	wyslijWiadomosc(&robot, Polnoc);
 
+	HAL_Delay(3000);
   }
   /* USER CODE END 3 */
 }
