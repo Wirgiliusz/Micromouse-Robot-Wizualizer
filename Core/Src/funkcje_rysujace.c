@@ -82,19 +82,40 @@ void rysujEnkoder(int impulsy, int lewy) {
 }
 
 void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4) {
-	czujnik1 = czujnik1/4;
-	czujnik2 = czujnik2/4;
-	czujnik3 = czujnik3/4;
-	czujnik4 = czujnik4/4;
-	char czujnik1str[4], czujnik2str[4], czujnik3str[4], czujnik4str[4];
+	char czujnik1str[5], czujnik2str[5], czujnik3str[5], czujnik4str[5];
 	sprintf(czujnik1str, "%d", czujnik1);
 	sprintf(czujnik2str, "%d", czujnik2);
 	sprintf(czujnik3str, "%d", czujnik3);
 	sprintf(czujnik4str, "%d", czujnik4);
-	BSP_LCD_DisplayStringAt(70, 270, (uint8_t*)czujnik4str, LEFT_MODE);
-	BSP_LCD_DisplayStringAt(100, 270, (uint8_t*)czujnik2str, LEFT_MODE);
-	BSP_LCD_DisplayStringAt(130, 270, (uint8_t*)czujnik1str, LEFT_MODE);
-	BSP_LCD_DisplayStringAt(160, 270, (uint8_t*)czujnik3str, LEFT_MODE);
+	if(czujnik1 < 1000) {
+		czujnik1str[0] = '0';
+	}
+	if(czujnik2 < 1000) {
+		czujnik2str[0] = '0';
+	}
+	if(czujnik3 < 1000) {
+		czujnik3str[0] = '0';
+	}
+	if(czujnik4 < 1000) {
+		czujnik4str[0] = '0';
+	}
+	if(czujnik1 < 100) {
+		czujnik1str[1] = '0';
+	}
+	if(czujnik2 < 100) {
+		czujnik2str[1] = '0';
+	}
+	if(czujnik3 < 100) {
+		czujnik3str[1] = '0';
+	}
+	if(czujnik4 < 100) {
+		czujnik4str[1] = '0';
+	}
+
+	BSP_LCD_DisplayStringAt(70, 270, (uint8_t*)czujnik3str, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(100, 270, (uint8_t*)czujnik1str, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(130, 270, (uint8_t*)czujnik2str, LEFT_MODE);
+	BSP_LCD_DisplayStringAt(160, 270, (uint8_t*)czujnik4str, LEFT_MODE);
 
 }
 

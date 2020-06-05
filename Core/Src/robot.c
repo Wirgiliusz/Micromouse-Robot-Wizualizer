@@ -199,12 +199,12 @@ void obroc(Robot* robot, enum Strony strona) {
 	case Lewo:
 		robot->orientacja++;
 		robot->orientacja %=4;
-		regulator(robot, 8.1, 1, Lewo);
+		regulator(robot, 8, 1, Lewo);
 		break;
 	case Prawo:
 		robot->orientacja--;
 		robot->orientacja %=4;
-		regulator(robot, 8.1, 1, Prawo);
+		regulator(robot, 8, 1, Prawo);
 		break;
 	}
 }
@@ -295,6 +295,7 @@ void jedzKierunek(Robot* robot, enum Orientacje kierunek) {
 
 void skanujObszar(Robot* robot) {
 	void ADC_SetActiveChannel(ADC_HandleTypeDef *hadc, uint32_t AdcChannel);
+	int poprawka = 0;
 
 	if(HAL_ADC_PollForConversion(&hadc1, 10) == HAL_OK) {
 		robot->odczytCzujnikow[0] = HAL_ADC_GetValue(&hadc1);
@@ -318,7 +319,7 @@ void skanujObszar(Robot* robot) {
 		HAL_ADC_Start(&hadc1);
 	}
 
-	if(robot->odczytCzujnikow[0] > 3100 || robot->odczytCzujnikow[1] > 3400) {
+	if(robot->odczytCzujnikow[0] > 3900 || robot->odczytCzujnikow[1] > 3900) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
@@ -335,7 +336,13 @@ void skanujObszar(Robot* robot) {
 		}
 
 	}
-	if(robot->odczytCzujnikow[2] > 3100) {
+	if(robot->odczytCzujnikow[1] < 400) {
+		poprawka = -300;
+	}
+	else {
+		poprawka = 0;
+	}
+	if(robot->odczytCzujnikow[2] > 3900 + poprawka) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
@@ -351,7 +358,7 @@ void skanujObszar(Robot* robot) {
 			break;
 		}
 	}
-	if(robot->odczytCzujnikow[3] > 3100) {
+	if(robot->odczytCzujnikow[3] > 3900 + poprawka) {
 		switch (robot->orientacja){
 		case Polnoc:
 			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
@@ -368,20 +375,22 @@ void skanujObszar(Robot* robot) {
 		}
 	}
 
-	switch (robot->orientacja) {
-		case Polnoc:
-			robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
-			break;
-		case Zachod:
-			robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
-			break;
-		case Poludnie:
-			robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
-			break;
-		case Wschod:
-			robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
-			break;
+	if(!(robot->posX == 0 && robot->posY == 0)) {
+		switch (robot->orientacja) {
+			case Polnoc:
+				robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+				break;
+			case Zachod:
+				robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+				break;
+			case Poludnie:
+				robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+				break;
+			case Wschod:
+				robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+				break;
 		}
+	}
 
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
 }
