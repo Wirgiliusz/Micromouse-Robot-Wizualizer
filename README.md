@@ -25,3 +25,10 @@ $ rosrun using_markers publisher_node.py
 $ rviz rviz
 ```
 5. postępuj z instrukcjami widocznymi po uruchomieniu skryptu w konsoli nr. 3
+
+<details>
+  <summary>Efekt wizualizacji (duży obrazek)</summary>
+  
+  ![Efekt wizualizacji](https://puu.sh/FTIWe/014d7742f2.png)
+  
+</details>
