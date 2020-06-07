@@ -14,14 +14,14 @@ $ roscore
 ```
 2. w nowej konsoli (nr. 2) uruchom program komunikujący się z programem RViZ i skryptem bluetooth
 ```shell
-$rosrun using_markers basic_shapes
+$ rosrun using_markers basic_shapes
 ```
 3. w kolejnej konsoli (nr. 3) uruchom skrypt łączący się z modułem bluetooth
 ```shell
-$rosrun using_markers publisher_node.py
+$ rosrun using_markers publisher_node.py
 ```
 4. w kolejnej konsoli (nr. 4) uruchom program RViZ
 ```shell
-$rviz rviz
+$ rviz rviz
 ```
 5. postępuj z instrukcjami widocznymi po uruchomieniu skryptu w konsoli nr. 3
