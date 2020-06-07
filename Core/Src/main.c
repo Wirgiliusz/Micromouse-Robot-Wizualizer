@@ -57,10 +57,9 @@
 
 /* USER CODE BEGIN PV */
 int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
-int narysowano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
-Robot robot = {0, 0, Wschod}; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
+int przejechano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
+Robot robot; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
-long impulsy;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -87,10 +86,22 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 	switch(atoi(&odebraneDane)) {
 	case 0:
-		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_RESET);
+		rysujDebug(0);
+		robot.jedz = 0;
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 	break;
 	case 1:
-		HAL_GPIO_WritePin(LED_GPIO_Port, LED_Pin, GPIO_PIN_SET);
+		rysujDebug(1);
+		robot.jedz = 1;
+	break;
+	case 2:
+		rysujDebug(2);
+	break;
+	case 3:
+		rysujDebug(3);
 	break;
 	}
 	HAL_UART_Receive_IT(&huart1, &odebraneDane, 1);
@@ -111,7 +122,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-
+	robot = konstruktorRobota(0, 0, Wschod);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -174,32 +185,40 @@ int main(void)
   // Inicjalizacja licznika enkodera
   HAL_TIM_Base_Start(&htim5);	// Enkoder R (PA0)
   HAL_TIM_Base_Start(&htim3);	// Enkoder L (P14)
+
+  inicjalizujRysowanie();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-	//impulsy = __HAL_TIM_GET_COUNTER(&htim5);
 	skanujObszar(&robot);
+	if(robot.jedz == 0) {
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
+		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
 
 	// Symulacja ruchu robota przez labirynt //
-	if(!narysowano) {
-		inicjalizujRysowanie();
-
-		HAL_Delay(3000);
+	if(!przejechano) {
+		//przeszukajLabirynt(&robot);
+		/*
 		jedzProsto(&robot);
 		jedzProsto(&robot);
 		jedzPrawo(&robot);
 		jedzLewo(&robot);
 		jedzLewo(&robot);
 		jedzTyl(&robot);
-
-		narysowano = 1;
+		*/
+		przejechano = 1;
     }
+	przeszukajLabirynt(&robot);
+
   }
   /* USER CODE END 3 */
 }
