@@ -1,10 +1,14 @@
 # Micromouse Robot Wizualizer
  Projekt na RM (Micromouse Robot) i SR (Micromouse Wizualizer)
 
+---
+
 ## Opis projektu
 Projekt składa się z dwóch projektów:
 1. Projekt robota Micromouse - odpowiada za oprogramowanie do stworzonego robota micromouse. Składają się na niego funkcje odpowiedzialne za ruch robota, odczyt danych z czujników, odczyt danych z enkoderów oraz algorytmy odpowiedzialne za przeszukiwanie labiryntu, a następnie znalezienie w nim najkrótszej ścieżki i przejechanie jej.
 2. Projekt wizualizacji robota micromouse - składają się na niego funkcje zaimplementowane z oprogramowaniu robota odpowiedzialne za komunikację z wyświetlaczem LCD znajdującym się na użytej płytce (STM32F429I-DISC1) i rysowanie na niej poznawanego labiryntu wraz z informacjami o stanie robota i jego aktualej pozycji w labiryncie. Druga część projektu znajduje się w folderze [ROS_RVIZ](/ROS_RVIZ) i odpowiada ona za wizualizację robota wraz z labiryntem na żywo w oprogramowaniu RViZ. Jest to możliwe dzięki połączeniu bluetooth z robotem.
+
+---
 
 ### Uruchomienie części wizualizacyjnej
 Aby uruchomić część 2 projektu należy mieć zainstalowane oprogramowanie ROS i pakiet RViZ oraz wykonać następujące kroki:
