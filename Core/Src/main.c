@@ -194,31 +194,26 @@ int main(void)
   while (1)
   {
 	skanujObszar(&robot);
+
+	if(!przejechano) {
+		przeszukajLabirynt(&robot);
+		znajdzNajkrotszaSciezkeStart(&robot);
+
+		przejechano = 1;
+	}
+
 	if(robot.jedz == 0) {
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim2, TIM_CHANNEL_1, 0);
 		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_2, 0);
 	}
+	else {
+		przejedzLabirynt(&robot);
+	}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	// Symulacja ruchu robota przez labirynt //
-	if(!przejechano) {
-		//przeszukajLabirynt(&robot);
-		/*
-		jedzProsto(&robot);
-		jedzProsto(&robot);
-		jedzPrawo(&robot);
-		jedzLewo(&robot);
-		jedzLewo(&robot);
-		jedzTyl(&robot);
-		*/
-		przejechano = 1;
-    }
-	przeszukajLabirynt(&robot);
-
   }
   /* USER CODE END 3 */
 }
