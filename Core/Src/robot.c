@@ -172,7 +172,7 @@ void jedzProsto(Robot* robot) {
 	HAL_Delay(500);
 	rysujKwadratPusty(robot->posX, robot->posY);
 
-	regulator(robot, 17.5, 0, Prawo);
+	//regulator(robot, 17.5, 0, Prawo);
 
 	switch(robot->orientacja) {
 	case Polnoc:
@@ -191,7 +191,7 @@ void jedzProsto(Robot* robot) {
 
 	rysujKwadratPelny(robot->posX, robot->posY);
 	rysujPozycje(robot->posX, robot->posY);
-	HAL_Delay(1500);
+	HAL_Delay(500);
 }
 
 void obroc(Robot* robot, enum Strony strona) {
@@ -199,12 +199,12 @@ void obroc(Robot* robot, enum Strony strona) {
 	case Lewo:
 		robot->orientacja++;
 		robot->orientacja %=4;
-		regulator(robot, 8, 1, Lewo);
+		//regulator(robot, 8, 1, Lewo);
 		break;
 	case Prawo:
 		robot->orientacja--;
 		robot->orientacja %=4;
-		regulator(robot, 8, 1, Prawo);
+		//regulator(robot, 8, 1, Prawo);
 		break;
 	}
 }
@@ -393,6 +393,25 @@ void skanujObszar(Robot* robot) {
 	}
 
 	rysujCzujniki(robot->odczytCzujnikow[0], robot->odczytCzujnikow[1], robot->odczytCzujnikow[2], robot->odczytCzujnikow[3]);
+}
+
+void skanujObszarPomoc(Robot* robot, int w, int a, int s, int d) {
+	if(w) {
+		robot->labiryntPoznawany[robot->posY][robot->posX] |= NORTH;
+	}
+	if(a) {
+		robot->labiryntPoznawany[robot->posY][robot->posX] |= WEST;
+	}
+	if(s) {
+		robot->labiryntPoznawany[robot->posY][robot->posX] |= SOUTH;
+	}
+	if(d) {
+		robot->labiryntPoznawany[robot->posY][robot->posX] |= EAST;
+	}
+
+	rysujPolaczenia(robot);
+
+	HAL_Delay(300);
 }
 
 void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY) {

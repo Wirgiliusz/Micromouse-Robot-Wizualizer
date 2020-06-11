@@ -211,6 +211,8 @@ int main(void)
 	else {
 		przejedzLabirynt(&robot);
 	}
+
+
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

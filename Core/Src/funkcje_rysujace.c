@@ -8,6 +8,9 @@
 #include "stm32f429i_discovery_lcd.h"
 #include <stdio.h>
 
+#define WSP_WIELKOSCI 2 // Labirynt 4x4
+//#define WSP_WIELKOSCI 1 // Labirynt 8x8
+//#define WSP_WIELKOSCI 0.5 // Labirynt 16x16
 
 void inicjalizujRysowanie() {
 	BSP_LCD_Clear(LCD_COLOR_BLACK);
@@ -121,12 +124,12 @@ void rysujCzujniki(int czujnik1, int czujnik2, int czujnik3, int czujnik4) {
 
 void rysujKwadratPusty(int posX, int posY) {
 	BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-	BSP_LCD_FillRect(posX*30+4, posY*30+4, 22, 22);
+	BSP_LCD_FillRect((posX*30+4)*WSP_WIELKOSCI, (posY*30+4)*WSP_WIELKOSCI, (22)*WSP_WIELKOSCI, (22)*WSP_WIELKOSCI);
 }
 
 void rysujKwadratPelny(int posX, int posY) {
 	BSP_LCD_SetTextColor(LCD_COLOR_RED);
-	BSP_LCD_FillRect(posX*30+4, posY*30+4, 22, 22);
+	BSP_LCD_FillRect((posX*30+4)*WSP_WIELKOSCI, (posY*30+4)*WSP_WIELKOSCI, (22)*WSP_WIELKOSCI, (22)*WSP_WIELKOSCI);
 }
 
 void rysujPolaczeniePrzedWejsciem(Robot* robot){
@@ -174,20 +177,18 @@ void rysujPolaczeniePoWejsciu(Robot* robot){
 void rysujPolaczenia(Robot* robot) {
 	if(robot->labiryntPoznawany[robot->posY][robot->posX] & NORTH) {
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30, 2, 4);
+		BSP_LCD_FillRect((robot->posX*30+14)*WSP_WIELKOSCI, (robot->posY*30)*WSP_WIELKOSCI, 2*WSP_WIELKOSCI, 4*WSP_WIELKOSCI);
 	}
 	if(robot->labiryntPoznawany[robot->posY][robot->posX] & WEST) {
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-		BSP_LCD_FillRect(robot->posX*30, robot->posY*30+14, 4, 2);
+		BSP_LCD_FillRect((robot->posX*30)*WSP_WIELKOSCI, (robot->posY*30+14)*WSP_WIELKOSCI, 4*WSP_WIELKOSCI, 2*WSP_WIELKOSCI);
 	}
 	if(robot->labiryntPoznawany[robot->posY][robot->posX] & EAST) {
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-		BSP_LCD_FillRect(robot->posX*30+26, robot->posY*30+14, 4, 2);
-
+		BSP_LCD_FillRect((robot->posX*30+26)*WSP_WIELKOSCI, (robot->posY*30+14)*WSP_WIELKOSCI, 4*WSP_WIELKOSCI, 2*WSP_WIELKOSCI);
 	}
 	if(robot->labiryntPoznawany[robot->posY][robot->posX] & SOUTH) {
 		BSP_LCD_SetTextColor(LCD_COLOR_WHITE);
-		BSP_LCD_FillRect(robot->posX*30+14, robot->posY*30+26, 2, 4);
-
+		BSP_LCD_FillRect((robot->posX*30+14)*WSP_WIELKOSCI, (robot->posY*30+26)*WSP_WIELKOSCI, 2*WSP_WIELKOSCI, 4*WSP_WIELKOSCI);
 	}
 }

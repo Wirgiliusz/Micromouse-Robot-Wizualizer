@@ -44,6 +44,7 @@ void jedzPrawo(Robot* robot);
 void jedzLewo(Robot* robot);
 void jedzTyl(Robot* robot);
 
+void skanujObszarPomoc(Robot* robot, int w, int a, int s, int d);
 void skanujObszar(Robot* robot);
 void jedzKierunek(Robot* robot, enum Orientacje kierunek);
 void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY);
