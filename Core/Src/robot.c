@@ -4,6 +4,7 @@
  *  Created on: 1 kwi 2020
  *      Author: Maialen
  */
+
 #include "robot.h"
 #include "tim.h"
 #include "funkcje_rysujace.h"
@@ -113,7 +114,6 @@ void regulator(Robot* robot, float odleglosc, int czyObrot, enum Strony strona) 
 
 		u1 = Kp1 * robot->e1 + Kd1 * (robot->e1 - robot->e1_poprzednie);
 		u2 = Kp2 * robot->e2 + Kd2 * (robot->e2 - robot->e2_poprzednie);
-		u2 = 0;
 		if(u1 > 300) {
 			u1 = 300;
 		}
@@ -172,7 +172,7 @@ void jedzProsto(Robot* robot) {
 	HAL_Delay(500);
 	rysujKwadratPusty(robot->posX, robot->posY);
 
-	//regulator(robot, 17.5, 0, Prawo);
+	regulator(robot, 17.5, 0, Prawo);
 
 	switch(robot->orientacja) {
 	case Polnoc:
@@ -199,12 +199,12 @@ void obroc(Robot* robot, enum Strony strona) {
 	case Lewo:
 		robot->orientacja++;
 		robot->orientacja %=4;
-		//regulator(robot, 8, 1, Lewo);
+		regulator(robot, 8, 1, Lewo);
 		break;
 	case Prawo:
 		robot->orientacja--;
 		robot->orientacja %=4;
-		//regulator(robot, 8, 1, Prawo);
+		regulator(robot, 8, 1, Prawo);
 		break;
 	}
 }
@@ -420,31 +420,31 @@ void znajdzNajkrotszaSciezkeRekurencja(Robot* robot, int posX, int posY) {
        return;
    }
 
-    // Przejscie do kolejnego pola w zaleznosci od mozliwych polaczen
-    if(robot->labiryntPoznawany[posY][posX] & NORTH) {
-        if(!robot->tabSciezki[posY-1][posX] || robot->tabSciezki[posY-1][posX] > robot->tabSciezki[posY][posX] ) {
-            robot->tabSciezki[posY-1][posX] = robot->tabSciezki[posY][posX] + 1;
-            znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY-1);
-        }
-    }
-    if(robot->labiryntPoznawany[posY][posX] & WEST) {
-        if(!robot->tabSciezki[posY][posX-1] || robot->tabSciezki[posY][posX-1] > robot->tabSciezki[posY][posX] ) {
-            robot->tabSciezki[posY][posX-1] = robot->tabSciezki[posY][posX] + 1;
-            znajdzNajkrotszaSciezkeRekurencja(robot, posX-1, posY);
-        }
-    }
-    if(robot->labiryntPoznawany[posY][posX] & SOUTH) {
-        if(!robot->tabSciezki[posY+1][posX] || robot->tabSciezki[posY+1][posX] > robot->tabSciezki[posY][posX] ) {
-            robot->tabSciezki[posY+1][posX] = robot->tabSciezki[posY][posX] + 1;
-            znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY+1);
-        }
-    }
-    if(robot->labiryntPoznawany[posY][posX] & EAST) {
-        if(!robot->tabSciezki[posY][posX+1] || robot->tabSciezki[posY][posX+1] > robot->tabSciezki[posY][posX] ) {
-            robot->tabSciezki[posY][posX+1] = robot->tabSciezki[posY][posX] + 1;
-            znajdzNajkrotszaSciezkeRekurencja(robot, posX+1, posY);
-        }
-    }
+	// Przejscie do kolejnego pola w zaleznosci od mozliwych polaczen
+	if(robot->labiryntPoznawany[posY][posX] & NORTH) {
+		if(!robot->tabSciezki[posY-1][posX] || robot->tabSciezki[posY-1][posX] > robot->tabSciezki[posY][posX] ) {
+			robot->tabSciezki[posY-1][posX] = robot->tabSciezki[posY][posX] + 1;
+			znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY-1);
+		}
+	}
+	if(robot->labiryntPoznawany[posY][posX] & WEST) {
+		if(!robot->tabSciezki[posY][posX-1] || robot->tabSciezki[posY][posX-1] > robot->tabSciezki[posY][posX] ) {
+			robot->tabSciezki[posY][posX-1] = robot->tabSciezki[posY][posX] + 1;
+			znajdzNajkrotszaSciezkeRekurencja(robot, posX-1, posY);
+		}
+	}
+	if(robot->labiryntPoznawany[posY][posX] & SOUTH) {
+		if(!robot->tabSciezki[posY+1][posX] || robot->tabSciezki[posY+1][posX] > robot->tabSciezki[posY][posX] ) {
+			robot->tabSciezki[posY+1][posX] = robot->tabSciezki[posY][posX] + 1;
+			znajdzNajkrotszaSciezkeRekurencja(robot, posX, posY+1);
+		}
+	}
+	if(robot->labiryntPoznawany[posY][posX] & EAST) {
+		if(!robot->tabSciezki[posY][posX+1] || robot->tabSciezki[posY][posX+1] > robot->tabSciezki[posY][posX] ) {
+			robot->tabSciezki[posY][posX+1] = robot->tabSciezki[posY][posX] + 1;
+			znajdzNajkrotszaSciezkeRekurencja(robot, posX+1, posY);
+		}
+	}
 }
 
 void znajdzNajkrotszaSciezkeStart(Robot* robot) {

@@ -4,13 +4,11 @@
  *  Created on: 1 kwi 2020
  *      Author: Maialen
  */
+
 #include "funkcje_rysujace.h"
 #include "stm32f429i_discovery_lcd.h"
 #include <stdio.h>
 
-#define WSP_WIELKOSCI 2 // Labirynt 4x4
-//#define WSP_WIELKOSCI 1 // Labirynt 8x8
-//#define WSP_WIELKOSCI 0.5 // Labirynt 16x16
 
 void inicjalizujRysowanie() {
 	BSP_LCD_Clear(LCD_COLOR_BLACK);

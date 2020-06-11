@@ -10,6 +10,10 @@
 
 #include "robot.h"
 
+#define WSP_WIELKOSCI 2 // Labirynt 4x4
+//#define WSP_WIELKOSCI 1 // Labirynt 8x8
+//#define WSP_WIELKOSCI 0.5 // Labirynt 16x16
+
 void inicjalizujRysowanie();
 
 void rysujGranicePlanszy();

@@ -45,7 +45,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define OPOZNIENIE_SYMULUJACE_RUCH 200
+
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -56,7 +56,6 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-int szerokoscSygnalu = 0; 	// Szerokosc sygnalu PWM (0-1000)
 int przejechano = 0; 		// Zmienna pomocnicza zapobiegajaca cyklicznemu rysowaniu sie na wyswietlaczu
 Robot robot; 	// Obiekt robota (pozycja x, pozycja y, orientacja)
 uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
@@ -65,22 +64,6 @@ uint8_t odebraneDane; 		// Dane odebrane od modulu Bluetooth
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
-// Przerwanie dla nacisniecia przycisku USER
-/*
-void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
-	if(GPIO_Pin == BUTTON_Pin) {
-		HAL_GPIO_TogglePin(LED_GPIO_Port, LED_Pin);
-		if(szerokoscSygnalu > 1000) {
-			szerokoscSygnalu = 0;
-		}
-		szerokoscSygnalu += 10;
-		__HAL_TIM_SET_COMPARE(&htim4, TIM_CHANNEL_1, szerokoscSygnalu);
-		__HAL_TIM_SET_COMPARE(&htim9, TIM_CHANNEL_1, szerokoscSygnalu);
-
-		rysujPredkosc(szerokoscSygnalu);
-	}
-}
-*/
 
 // Przerwanie dla odebrania danych z modulu BT
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
@@ -122,7 +105,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
 int main(void)
 {
   /* USER CODE BEGIN 1 */
-	robot = konstruktorRobota(0, 0, Wschod);
+  robot = konstruktorRobota(0, 0, Wschod);
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
