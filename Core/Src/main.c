@@ -195,7 +195,7 @@ int main(void)
   {
 	skanujObszar(&robot);
 
-	if(!przejechano) {
+	if(!przejechano && robot.jedz != 0) {
 		przeszukajLabirynt(&robot);
 		znajdzNajkrotszaSciezkeStart(&robot);
 
