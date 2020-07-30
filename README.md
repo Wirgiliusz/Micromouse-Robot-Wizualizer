@@ -10,6 +10,12 @@ Projekt składa się z dwóch projektów:
 
 ---
 
+## Efekt końcowy
+Poniższy obrazek pokazuje efekt wizualizacji.
+<img src="https://puu.sh/FTIWe/014d7742f2.png">
+
+---
+
 ### Uruchomienie części wizualizacyjnej
 Aby uruchomić część 2 projektu należy mieć zainstalowane oprogramowanie ROS i pakiet RViZ oraz wykonać następujące kroki:
 1. uruchom oprogowamowanie ROS
@@ -30,9 +36,3 @@ $ rviz rviz
 ```
 5. postępuj z instrukcjami widocznymi po uruchomieniu skryptu w konsoli nr. 3
 
-<details>
-  <summary>Efekt wizualizacji (duży obrazek)</summary>
-  
-  ![Efekt wizualizacji](https://puu.sh/FTIWe/014d7742f2.png)
-  
-</details>
