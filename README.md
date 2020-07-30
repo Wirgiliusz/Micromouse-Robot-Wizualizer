@@ -1,5 +1,5 @@
 # Micromouse Robot Wizualizer
- Projekt na RM (Micromouse Robot) i SR (Micromouse Wizualizer)
+ Projekt robota Micromouse wraz z algorytmami przeszukiwania labiryntu oraz wizualizacji na wyświetlaczu LCD i w oprogramowaniu RViZ.
 
 ---
 
@@ -11,8 +11,17 @@ Projekt składa się z dwóch projektów:
 ---
 
 ## Efekt końcowy
-Poniższy obrazek pokazuje efekt wizualizacji.
-<img src="https://puu.sh/FTIWe/014d7742f2.png">
+Poniższy obrazek pokazuje konstrukcję robota.
+
+<img src="https://puu.sh/GcFjx/4a77b9a5cf.jpg" width="700">
+
+Poniższy obrazek pokazuje efekt wizualizacji w oprogramowaniu RViZ.
+
+<img src="https://puu.sh/FTIWe/014d7742f2.png" width="700">
+
+Poniższy obrazek pokazuje efekt wizualizacji na wyświetlaczu LCD robota.
+
+<img src="https://puu.sh/GcF8r/dff1027895.jpg" width="700">
 
 ---
 
