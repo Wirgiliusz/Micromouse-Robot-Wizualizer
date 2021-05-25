@@ -1,50 +1,61 @@
 # Micromouse Robot Wizualizer
-Projekt robota Micromouse wraz z algorytmami przeszukiwania labiryntu oraz wizualizacji na wyświetlaczu LCD i w oprogramowaniu RViZ.
+Project of a Micromouse robot with labirynth solving algorithms and visualisation on LCD display and in RViZ software.
+
+[Readme in polish](/docs/README_pl.md)
 
 ---
 
-## Opis projektu
-Projekt składa się z dwóch projektów:
-1. Projekt robota Micromouse - odpowiada za oprogramowanie do stworzonego robota micromouse. Składają się na niego funkcje odpowiedzialne za ruch robota, odczyt danych z czujników, odczyt danych z enkoderów oraz algorytmy odpowiedzialne za przeszukiwanie labiryntu, a następnie znalezienie w nim najkrótszej ścieżki i przejechanie jej.
-2. Projekt wizualizacji robota micromouse - składają się na niego funkcje zaimplementowane z oprogramowaniu robota odpowiedzialne za komunikację z wyświetlaczem LCD znajdującym się na użytej płytce (STM32F429I-DISC1) i rysowanie na niej poznawanego labiryntu wraz z informacjami o stanie robota i jego aktualej pozycji w labiryncie. Druga część projektu znajduje się w folderze [ROS_RVIZ](/ROS_RVIZ) i odpowiada ona za wizualizację robota wraz z labiryntem na żywo w oprogramowaniu RViZ. Jest to możliwe dzięki połączeniu bluetooth z robotem.
+## Project description
+The project is made of two main parts:
+1. Project of the Micromouse robot - mechanical, electronical and software part of the robot. 
+   - Mechanical part consists of the robot housing. 
+   - Electronical part consists of **STM32F429I-DISC1 microcontroller**, **HC-05 Bluetooth module**, DC motors, **LCD disply**, distance sensors and power supply. 
+   - Software part consists of functions responsible for robot movement, environment scanning, and algorithms for searching the labirynth, finding the shortests path and driving to the finish.
+3. Project of the robot visualization - functions responsible for communication with the LCD display, Bluetooth module, and visualization in RViZ software. 
+   - The LCD display visualizes labirynt known to robot and shows information about speed and sensor readings. 
+   - The bluetooth module communicates with PC computer via Python script and sends informations about robot. 
+   - The PC computer uses RViZ software created in C++ language to visuallize the robot and labirynth in real-time.
 
 ---
 
-## Efekt końcowy
+## Results
 ### Robot
 
 <img src=/docs/imgs/robot.jpg width="700">
 
-### Wizualizacji w oprogramowaniu RViZ
+### RViZ visualization
 
 <img src=/docs/imgs/rviz.png width="700">
 
-### Wyświetlacz LCD robota
+### LCD display
 
 <img src=/docs/imgs/lcd.png width="700">
 
-### Schemat elektroniczny
+### Electronic diagram
 <img src=/docs/imgs/electric_diagram.png width="700">
+
+### Program flows
+<img src=/docs/imgs/programsFlowChart.png width="700">
 
 ---
 
-### Uruchomienie części wizualizacyjnej
-Aby uruchomić część 2 projektu należy mieć zainstalowane oprogramowanie ROS i pakiet RViZ oraz wykonać następujące kroki:
-1. uruchom oprogowamowanie ROS
+### Running the visualization software
+To run the second part of the project you must install the ROS software with RViZ library and follow these steps:
+1. Run the ROS software
 ```shell
 $ roscore
 ```
-2. w nowej konsoli (nr. 2) uruchom program komunikujący się z programem RViZ i skryptem bluetooth
+3. In new console window run the application that communicates with RViZ and Bluetooth script
 ```shell
 $ rosrun using_markers basic_shapes
 ```
-3. w kolejnej konsoli (nr. 3) uruchom skrypt łączący się z modułem bluetooth
+4. In next console run the script for connecting with bluetooth module
 ```shell
 $ rosrun using_markers publisher_node.py
 ```
-4. w kolejnej konsoli (nr. 4) uruchom program RViZ
+4. In next console run the RViZ software
 ```shell
 $ rviz rviz
 ```
-5. postępuj z instrukcjami widocznymi po uruchomieniu skryptu w konsoli nr. 3
+6. Follow instructions that can be seen after running the script
 
