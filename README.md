@@ -1,5 +1,5 @@
 # Micromouse Robot Wizualizer
- Projekt robota Micromouse wraz z algorytmami przeszukiwania labiryntu oraz wizualizacji na wyświetlaczu LCD i w oprogramowaniu RViZ.
+Projekt robota Micromouse wraz z algorytmami przeszukiwania labiryntu oraz wizualizacji na wyświetlaczu LCD i w oprogramowaniu RViZ.
 
 ---
 
@@ -11,17 +11,20 @@ Projekt składa się z dwóch projektów:
 ---
 
 ## Efekt końcowy
-Poniższy obrazek pokazuje konstrukcję robota.
+### Robot
 
-<img src="https://puu.sh/GcFjx/4a77b9a5cf.jpg" width="700">
+<img src=/docs/imgs/robot.jpg width="700">
 
-Poniższy obrazek pokazuje efekt wizualizacji w oprogramowaniu RViZ.
+### Wizualizacji w oprogramowaniu RViZ
 
-<img src="https://puu.sh/FTIWe/014d7742f2.png" width="700">
+<img src=/docs/imgs/rviz.png width="700">
 
-Poniższy obrazek pokazuje efekt wizualizacji na wyświetlaczu LCD robota.
+### Wyświetlacz LCD robota
 
-<img src="https://puu.sh/GcF8r/dff1027895.jpg" width="700">
+<img src=/docs/imgs/lcd.png width="700">
+
+### Schemat elektroniczny
+<img src=/docs/imgs/electric_diagram.png width="700">
 
 ---
 
