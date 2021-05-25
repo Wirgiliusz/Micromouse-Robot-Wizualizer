@@ -19,6 +19,8 @@ The project is made of two main parts:
 ---
 
 ## Results
+**[-> Video of the visualization and robot <-](https://youtu.be/FICg5D9dTog)**
+
 ### Robot
 
 <img src=/docs/imgs/robot.jpg width="700">
