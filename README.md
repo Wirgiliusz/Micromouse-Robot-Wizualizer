@@ -9,7 +9,7 @@ Project of a Micromouse robot with labirynth solving algorithms and visualisatio
 The project is made of two main parts:
 1. Project of the Micromouse robot - mechanical, electronical and software part of the robot. 
    - Mechanical part consists of the robot housing. 
-   - Electronical part consists of **STM32F429I-DISC1 microcontroller**, **HC-05 Bluetooth module**, DC motors, **LCD disply**, distance sensors and power supply. 
+   - Electronical part consists of **STM32F429I-DISC1 microcontroller**, **HC-05 Bluetooth module**, DC motors, **LCD display**, distance sensors and power supply. 
    - Software part consists of functions responsible for robot movement, environment scanning, and algorithms for searching the labirynth, finding the shortests path and driving to the finish.
 3. Project of the robot visualization - functions responsible for communication with the LCD display, Bluetooth module, and visualization in RViZ software. 
    - The LCD display visualizes labirynt known to robot and shows information about speed and sensor readings. 
